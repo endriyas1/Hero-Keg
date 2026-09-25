@@ -66,8 +66,11 @@ function AnimatedCheckmark({ className = "w-5 h-5" }: { className?: string }) {
 export default React.memo(function ContactUs() {
   useSEO({
     title: 'Contact Us | Hero Keg Service and Trading PLC',
-    description: 'Get in touch with Hero Keg Service and Trading PLC for your brewery maintenance, repairs, parts supply, and technical support in Ethiopia.',
-    keywords: 'contact hero keg, keg service ethiopia, brewery support, keg repair contact'
+    description: 'Get in touch with Hero Keg Service and Trading PLC for brewery keg maintenance, emergency repairs, parts supply, or to schedule mobile service at your facility in Ethiopia.',
+    keywords: 'contact hero keg, keg service ethiopia, brewery support, keg repair quote, Addis Ababa keg maintenance',
+    image: '/og-contact.png',
+    imageAlt: 'Hero Keg Service and Trading PLC - Contact and Facility Location',
+    urlPath: '/contact'
   });
 
   const [formData, setFormData] = useState({

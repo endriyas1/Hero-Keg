@@ -44,9 +44,12 @@ const staggerContainer = {
 
 export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'home' | 'about' | 'services' | 'contact' | 'why-choose-us') => void }) {
   useSEO({
-    title: 'Home | Hero Keg Service and Trading PLC',
-    description: 'We provide Mobile Keg Service directly to your facility. Professional keg maintenance, sanitation, repair, and genuine parts solutions.',
-    keywords: 'mobile keg service, keg repair, brewery maintenance, keg sanitation, Ethiopia'
+    title: 'Hero Keg Service and Trading PLC - Professional Mobile Keg Services',
+    description: 'We provide Mobile Keg Service directly to your facility in Ethiopia. Professional keg maintenance, chime & neck repair, sanitation, valve servicing, and genuine spare parts.',
+    keywords: 'mobile keg service, keg repair, brewery maintenance, keg sanitation, draught beer Ethiopia, Hero Keg',
+    image: '/og-home.png',
+    imageAlt: 'Hero Keg Service - Professional Mobile Keg Maintenance & Inspection',
+    urlPath: '/'
   });
 
   return (
@@ -280,7 +283,7 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
             </motion.div>
             <motion.div variants={fadeInUp} className="py-6 md:py-0 flex flex-col items-center justify-center group hover:scale-105 transition-transform duration-300">
               <Shield className="w-8 h-8 text-slate-400 mb-3 group-hover:text-[#C5A059] group-hover:scale-110 transition-all duration-300" strokeWidth={1.5} />
-              <div className="text-4xl md:text-5xl font-bold mb-2 tracking-tight group-hover:text-[#C5A059] transition-colors">16,000+</div>
+              <div className="text-4xl md:text-5xl font-bold mb-2 tracking-tight group-hover:text-[#C5A059] transition-colors">17,000+</div>
               <div className="text-xs text-slate-400 font-semibold tracking-widest uppercase">Spear & Gaskets Replaced</div>
             </motion.div>
             <motion.div variants={fadeInUp} className="py-6 md:py-0 flex flex-col items-center justify-center group hover:scale-105 transition-transform duration-300">

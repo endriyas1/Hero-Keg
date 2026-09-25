@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 
-export interface SEOProps {
+export interface MetaTagsProps {
   title: string;
   description: string;
-  keywords?: string;
   image?: string;
   imageAlt?: string;
   urlPath?: string;
@@ -15,6 +14,7 @@ function updateMetaTag(selector: string, attribute: 'content' | 'href', value: s
   if (!element) {
     if (selector.startsWith('meta[')) {
       element = document.createElement('meta');
+      // Extract attribute name and value from selector e.g. meta[property="og:image"]
       const match = selector.match(/meta\[([a-zA-Z0-9_-]+)=["']([^"']+)["']\]/);
       if (match) {
         element.setAttribute(match[1], match[2]);
@@ -35,35 +35,28 @@ function updateMetaTag(selector: string, attribute: 'content' | 'href', value: s
   }
 }
 
-export function useSEO({
+export function useMetaTags({
   title,
   description,
-  keywords,
   image = '/og-home.png',
   imageAlt = 'Hero Keg Service and Trading PLC',
   urlPath = '/',
-  type = 'website'
-}: SEOProps) {
+  type = 'website',
+}: MetaTagsProps) {
   useEffect(() => {
-    // 1. Page Title
+    // 1. Title
     const fullTitle = title.includes('Hero Keg')
       ? title
       : `${title} | Hero Keg Service and Trading PLC`;
     document.title = fullTitle;
 
-    // 2. URLs resolution
+    // 2. Resolve absolute URL and absolute Image URL
     const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.herokegservice.com';
-    const cleanPath = urlPath.startsWith('/') ? urlPath : `/${urlPath}`;
-    const absoluteUrl = urlPath.startsWith('http') ? urlPath : `${origin}${cleanPath}`;
-    const absoluteImage = image.startsWith('http') 
-      ? image 
-      : `${origin}${image.startsWith('/') ? '' : '/'}${image}`;
+    const absoluteUrl = urlPath.startsWith('http') ? urlPath : `${origin}${urlPath.startsWith('/') ? '' : '/'}${urlPath}`;
+    const absoluteImage = image.startsWith('http') ? image : `${origin}${image.startsWith('/') ? '' : '/'}${image}`;
 
-    // 3. Standard Description & Keywords
+    // 3. Standard Meta Description
     updateMetaTag('meta[name="description"]', 'content', description);
-    if (keywords) {
-      updateMetaTag('meta[name="keywords"]', 'content', keywords);
-    }
 
     // 4. Open Graph Tags
     updateMetaTag('meta[property="og:site_name"]', 'content', 'Hero Keg Service and Trading PLC');
@@ -84,12 +77,12 @@ export function useSEO({
     updateMetaTag('meta[name="twitter:image"]', 'content', absoluteImage);
     updateMetaTag('meta[name="twitter:image:alt"]', 'content', imageAlt);
 
-    // 6. Canonical URL
+    // 6. Canonical Link
     updateMetaTag('link[rel="canonical"]', 'href', absoluteUrl);
-  }, [title, description, keywords, image, imageAlt, urlPath, type]);
+  }, [title, description, image, imageAlt, urlPath, type]);
 }
 
-export default function MetaTags(props: SEOProps) {
-  useSEO(props);
+export default function MetaTags(props: MetaTagsProps) {
+  useMetaTags(props);
   return null;
 }

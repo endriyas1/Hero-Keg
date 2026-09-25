@@ -235,8 +235,11 @@ const faqs: FAQItem[] = [
 export default React.memo(function Services({ onNavigate }: { onNavigate?: (page: 'home' | 'about' | 'services' | 'contact' | 'why-choose-us') => void }) {
   useSEO({
     title: 'Our Services | Hero Keg Service and Trading PLC',
-    description: 'Explore our complete range of keg services including sanitation, structural repair, and spear/valve services in Ethiopia.',
-    keywords: 'keg sanitation, keg structural repair, spear service, genuine keg parts, mobile keg maintenance'
+    description: 'Comprehensive mobile keg services across Ethiopia: automated sanitation & steaming, structural straightening, precision TIG welding, valve & spear maintenance, pressure testing, and OEM spare parts.',
+    keywords: 'keg sanitation, keg structural repair, spear service, genuine keg parts, mobile keg maintenance ethiopia',
+    image: '/og-services.png',
+    imageAlt: 'Hero Keg Complete Service Solutions and Spare Parts',
+    urlPath: '/services'
   });
 
   const [openIndex, setOpenIndex] = useState<number | null>(null);

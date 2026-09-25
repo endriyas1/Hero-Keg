@@ -47,8 +47,11 @@ const staggerContainer = {
 export default React.memo(function AboutUs({ onNavigate }: { onNavigate?: (page: 'home' | 'about' | 'services' | 'contact' | 'why-choose-us') => void }) {
   useSEO({
     title: 'About Us | Hero Keg Service and Trading PLC',
-    description: 'Hero Keg Service and Trading PLC is Ethiopia\'s specialized partner for professional keg maintenance, sanitation, repair, and genuine parts supply.',
-    keywords: 'about hero keg, keg maintenance ethiopia, brewery partner, professional keg repair'
+    description: 'Hero Keg Service and Trading PLC is Ethiopia\'s premier specialized partner for professional mobile keg maintenance, structural repairs, sanitation, and certified technical support.',
+    keywords: 'about hero keg, keg maintenance ethiopia, brewery partner, professional keg repair, keg technicians',
+    image: '/og-about.png',
+    imageAlt: 'Hero Keg Service Team and Mobile Workshop',
+    urlPath: '/about'
   });
 
   const [activeTeamSlide, setActiveTeamSlide] = useState(0);
