@@ -1,4 +1,4 @@
-import React, { useState, Suspense, lazy, useCallback } from 'react';
+import React, { useState, useEffect, Suspense, lazy, useCallback } from 'react';
 import { Facebook, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
 
 const Home = lazy(() => import('./pages/Home'));
@@ -12,16 +12,43 @@ export const HeroKegLogo = ({ className = "" }: { className?: string }) => (
   <img src={logoImg} alt="Hero Keg Logo" className={`object-contain ${className}`} />
 );
 
-export default function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'services' | 'contact' | 'why-choose-us'>('home');
+type Page = 'home' | 'about' | 'services' | 'contact' | 'why-choose-us';
 
-  const handleNavigate = useCallback((page: 'home' | 'about' | 'services' | 'contact' | 'why-choose-us') => {
+function getPageFromUrl(): Page {
+  const path = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+  const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase();
+  if (path === 'about' || hash === 'about') return 'about';
+  if (path === 'services' || hash === 'services') return 'services';
+  if (path === 'contact' || hash === 'contact') return 'contact';
+  if (path === 'why-choose-us' || hash === 'why-choose-us') return 'why-choose-us';
+  return 'home';
+}
+
+export default function App() {
+  const [currentPage, setCurrentPage] = useState<Page>(() => getPageFromUrl());
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPage(getPageFromUrl());
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const handleNavigate = useCallback((page: Page) => {
     setCurrentPage(page);
+    const targetPath = page === 'home' ? '/' : `/${page}`;
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({}, '', targetPath);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   const scrollToWhyChooseUs = useCallback(() => {
     setCurrentPage('why-choose-us');
+    if (window.location.pathname !== '/why-choose-us') {
+      window.history.pushState({}, '', '/why-choose-us');
+    }
     setTimeout(() => {
       document.getElementById('why-choose-us')?.scrollIntoView({ behavior: 'smooth' });
     }, 100);

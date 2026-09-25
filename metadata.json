@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "Hero Keg Service and Trading PLC",
+  "description": "Professional mobile keg maintenance, sanitation, repair, and genuine parts solutions for breweries and draught beverage operations across Ethiopia.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

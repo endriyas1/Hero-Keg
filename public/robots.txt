@@ -1,0 +1,5 @@
+# Robots.txt for Hero Keg Service and Trading PLC
+User-agent: *
+Allow: /
+
+Sitemap: https://www.herokegservice.com/sitemap.xml
