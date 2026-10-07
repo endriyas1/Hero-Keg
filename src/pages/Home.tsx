@@ -11,8 +11,6 @@ import {
   Wrench,
   Layers,
   Package,
-  Shield,
-  Gauge,
   CheckCircle2,
   ArrowRight,
   ChevronLeft,
@@ -265,34 +263,6 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
             </motion.div>
           </motion.div>
         </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-16 bg-[#161F2E] text-white overflow-hidden">
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          variants={staggerContainer}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-slate-700 text-center">
-            <motion.div variants={fadeInUp} className="py-6 md:py-0 flex flex-col items-center justify-center group hover:scale-105 transition-transform duration-300">
-              <div className="text-4xl md:text-5xl font-bold mb-2 tracking-tight group-hover:text-[#C5A059] transition-colors">13,639+</div>
-              <div className="text-xs text-slate-400 font-semibold tracking-widest uppercase">Kegs Maintained</div>
-            </motion.div>
-            <motion.div variants={fadeInUp} className="py-6 md:py-0 flex flex-col items-center justify-center group hover:scale-105 transition-transform duration-300">
-              <Shield className="w-8 h-8 text-slate-400 mb-3 group-hover:text-[#C5A059] group-hover:scale-110 transition-all duration-300" strokeWidth={1.5} />
-              <div className="text-4xl md:text-5xl font-bold mb-2 tracking-tight group-hover:text-[#C5A059] transition-colors">17,000+</div>
-              <div className="text-xs text-slate-400 font-semibold tracking-widest uppercase">Spear & Gaskets Replaced</div>
-            </motion.div>
-            <motion.div variants={fadeInUp} className="py-6 md:py-0 flex flex-col items-center justify-center group hover:scale-105 transition-transform duration-300">
-              <Gauge className="w-8 h-8 text-slate-400 mb-3 group-hover:text-[#C5A059] group-hover:rotate-45 transition-all duration-500" strokeWidth={1.5} />
-              <div className="text-4xl md:text-5xl font-bold mb-2 tracking-tight group-hover:text-[#C5A059] transition-colors">100%</div>
-              <div className="text-xs text-slate-400 font-semibold tracking-widest uppercase">Pressure Tested</div>
-            </motion.div>
-          </div>
-        </motion.div>
       </section>
 
       {/* Our Partners */}

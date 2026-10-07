@@ -32,7 +32,7 @@ export function BeforeAfterSlider() {
   const slides: SlideItem[] = [
     {
       id: "body",
-      title: "Full Body Shell",
+      title: "Ultrasonic Cleaning",
       subtitle: "Multi-point cosmetic reconditioning",
       description: "We rescue and polish weathered, dirty, and carbonized keg shells, removing persistent beer stone deposits for a clean finish.",
       beforeImg: beforeBody,
@@ -62,7 +62,7 @@ export function BeforeAfterSlider() {
     },
     {
       id: "chime",
-      title: "Chime & Rim Re-Rolling",
+      title: "Top & Bottom Chime Straightening",
       subtitle: "Hydraulic structural straightening",
       description: "Heavy-duty hydraulic alignment of flat, dented, or warped rims, ensuring absolute stacking symmetry on conveyer lines.",
       beforeImg: beforeChime,
