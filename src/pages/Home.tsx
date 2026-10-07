@@ -19,8 +19,8 @@ import {
 import { BeforeAfterSlider } from '../components/BeforeAfterSlider';
 
 import heroImg from '../assets/images/home_hero_kegs_1779722365542.png';
-import sanitationImg from '../assets/images/service_sanitation_1779717414016.png';
-import repairImg from '../assets/images/service_repair_1779717434332.png';
+import sanitationImg from '../assets/images/service_sanitation_1779717414016.jpg';
+import repairImg from '../assets/images/service_repair_1779717434332.jpg';
 import valveImg from '../assets/images/service_valves_1779717454901.png';
 import partsImg from '../assets/images/service_parts_1779717475851.webp';
 import warehouseImg from '../assets/images/home_hero_kegs_1779722365542.png';

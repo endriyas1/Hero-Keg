@@ -18,8 +18,8 @@ import {
 } from 'lucide-react';
 
 import heroImg from '../assets/images/services_hero_1779722089553.png';
-import sanitationImg from '../assets/images/service_sanitation_1779717414016.png';
-import repairImg from '../assets/images/service_repair_1779717434332.png';
+import sanitationImg from '../assets/images/service_sanitation_1779717414016.jpg';
+import repairImg from '../assets/images/service_repair_1779717434332.jpg';
 import valveImg from '../assets/images/service_valves_1779717454901.png';
 import partsImg from '../assets/images/service_parts_1779717475851.webp';
 
