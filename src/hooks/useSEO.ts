@@ -8,6 +8,7 @@ export interface SEOProps {
   imageAlt?: string;
   urlPath?: string;
   type?: 'website' | 'article';
+  schema?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
 function updateMetaTag(selector: string, attribute: 'content' | 'href', value: string) {
@@ -42,7 +43,8 @@ export function useSEO({
   image = '/og-home.png',
   imageAlt = 'Hero Keg Service and Trading PLC',
   urlPath = '/',
-  type = 'website'
+  type = 'website',
+  schema
 }: SEOProps) {
   useEffect(() => {
     // 1. Page Title
@@ -59,8 +61,9 @@ export function useSEO({
       ? image 
       : `${origin}${image.startsWith('/') ? '' : '/'}${image}`;
 
-    // 3. Standard Description & Keywords
+    // 3. Standard Description, Keywords & Robots
     updateMetaTag('meta[name="description"]', 'content', description);
+    updateMetaTag('meta[name="robots"]', 'content', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
     if (keywords) {
       updateMetaTag('meta[name="keywords"]', 'content', keywords);
     }
@@ -86,7 +89,26 @@ export function useSEO({
 
     // 6. Canonical URL
     updateMetaTag('link[rel="canonical"]', 'href', absoluteUrl);
-  }, [title, description, keywords, image, imageAlt, urlPath, type]);
+
+    // 7. Schema.org JSON-LD Structured Data
+    if (schema) {
+      let scriptElement = document.getElementById('page-jsonld-schema') as HTMLScriptElement | null;
+      if (!scriptElement) {
+        scriptElement = document.createElement('script');
+        scriptElement.id = 'page-jsonld-schema';
+        scriptElement.type = 'application/ld+json';
+        document.head.appendChild(scriptElement);
+      }
+      scriptElement.textContent = JSON.stringify(schema);
+    }
+
+    return () => {
+      const scriptElement = document.getElementById('page-jsonld-schema');
+      if (scriptElement) {
+        scriptElement.remove();
+      }
+    };
+  }, [title, description, keywords, image, imageAlt, urlPath, type, schema]);
 }
 
 export default function MetaTags(props: SEOProps) {

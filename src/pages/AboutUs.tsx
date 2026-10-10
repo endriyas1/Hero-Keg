@@ -45,13 +45,54 @@ const staggerContainer = {
 };
 
 export default React.memo(function AboutUs({ onNavigate }: { onNavigate?: (page: 'home' | 'about' | 'services' | 'contact' | 'why-choose-us') => void }) {
+  const aboutSchema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "mainEntity": {
+        "@type": "Organization",
+        "name": "Hero Keg Service and Trading PLC",
+        "url": "https://www.herokegservice.com",
+        "logo": "/hero_keg_logo_1780328932509.png",
+        "description": "Ethiopia's premier specialized partner for professional mobile keg maintenance, structural repairs, sanitation, and brewery asset protection.",
+        "telephone": "+251943739086",
+        "email": "herokegservice@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Bole Bulbula Medhanialem Mall, 4th Floor, Office No. 420",
+          "addressLocality": "Addis Ababa",
+          "addressCountry": "ET"
+        }
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.herokegservice.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "About Us",
+          "item": "https://www.herokegservice.com/about"
+        }
+      ]
+    }
+  ];
+
   useSEO({
-    title: 'About Us | Hero Keg Service and Trading PLC',
-    description: 'Hero Keg Service and Trading PLC is Ethiopia\'s premier specialized partner for professional mobile keg maintenance, structural repairs, sanitation, and certified technical support.',
-    keywords: 'about hero keg, keg maintenance ethiopia, brewery partner, professional keg repair, keg technicians',
+    title: 'About Us – Premier Mobile Keg Technicians in Ethiopia | Hero Keg',
+    description: 'Hero Keg Service and Trading PLC is Ethiopia\'s premier partner for mobile keg maintenance, structural repairs, ultrasonic sanitation, and certified technical support in Addis Ababa.',
+    keywords: 'about hero keg, keg maintenance Ethiopia, brewery partner Addis Ababa, professional keg repair, keg technicians, Ethiopian brewing industry',
     image: '/og-about.png',
-    imageAlt: 'Hero Keg Service Team and Mobile Workshop',
-    urlPath: '/about'
+    imageAlt: 'Hero Keg Service Team and Mobile Workshop in Ethiopia',
+    urlPath: '/about',
+    schema: aboutSchema
   });
 
   const [activeTeamSlide, setActiveTeamSlide] = useState(0);
@@ -81,7 +122,9 @@ export default React.memo(function AboutUs({ onNavigate }: { onNavigate?: (page:
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveTeamSlide((prev) => (prev === teamSlides.length - 1 ? 0 : prev + 1));
+      if (!document.hidden) {
+        setActiveTeamSlide((prev) => (prev === teamSlides.length - 1 ? 0 : prev + 1));
+      }
     }, 4500);
     return () => clearInterval(timer);
   }, [teamSlides.length]);
@@ -89,15 +132,20 @@ export default React.memo(function AboutUs({ onNavigate }: { onNavigate?: (page:
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="bg-white font-sans text-gray-800">
       {/* Hero Section */}
-      <section className="relative">
+      <section className="relative overflow-hidden">
         <div className="absolute inset-0 z-0 overflow-hidden bg-slate-900">
           <motion.img 
             initial={{ scale: 1.05 }}
             animate={{ scale: 1 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
             src={heroImg} 
-            alt="Hero Keg Inspection" 
-            className="w-full h-full object-cover object-center"
+            alt="Hero Keg certified brewery technicians and mobile keg workshop facility in Ethiopia" 
+            width={1920}
+            height={1080}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            className="w-full h-full object-cover object-center block"
             referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-transparent"></div>
@@ -374,11 +422,15 @@ export default React.memo(function AboutUs({ onNavigate }: { onNavigate?: (page:
                       key={activeTeamSlide}
                       src={teamSlides[activeTeamSlide].img} 
                       alt={teamSlides[activeTeamSlide].title} 
+                      width={800}
+                      height={600}
+                      loading="lazy"
+                      decoding="async"
                       initial={{ opacity: 0.2, scale: 1.02 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0.2, scale: 0.98 }}
                       transition={{ duration: 0.35, ease: "easeInOut" }}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover object-center block"
                       referrerPolicy="no-referrer"
                     />
                   </AnimatePresence>
@@ -494,10 +546,16 @@ export default React.memo(function AboutUs({ onNavigate }: { onNavigate?: (page:
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 shrink-0 w-full md:w-auto">
-              <button className="bg-[#C5A059] text-white px-8 py-4 rounded font-semibold flex items-center justify-between min-w-[200px] hover:bg-[#a38043] transition-colors group">
+              <button 
+                onClick={() => onNavigate?.('contact')}
+                className="bg-[#C5A059] text-white px-8 py-4 rounded font-semibold flex items-center justify-between min-w-[200px] hover:bg-[#a38043] transition-colors group cursor-pointer"
+              >
                 Request a<br/>Quote <ArrowRight className="w-5 h-5 ml-4 group-hover:translate-x-1 transition-transform" />
               </button>
-              <button className="bg-white border border-slate-300 text-[#111827] px-8 py-4 rounded font-semibold flex items-center justify-between min-w-[200px] hover:bg-slate-50 hover:border-slate-400 transition-colors group">
+              <button 
+                onClick={() => onNavigate?.('contact')}
+                className="bg-white border border-slate-300 text-[#111827] px-8 py-4 rounded font-semibold flex items-center justify-between min-w-[200px] hover:bg-slate-50 hover:border-slate-400 transition-colors group cursor-pointer"
+              >
                 Contact Our<br/>Team <ArrowRight className="w-5 h-5 ml-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useSEO } from '../hooks/useSEO';
 import {
@@ -14,16 +14,28 @@ import {
   CheckCircle2,
   ArrowRight,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Beer,
+  PenTool,
+  Disc,
+  ChevronDown
 } from 'lucide-react';
-import { BeforeAfterSlider } from '../components/BeforeAfterSlider';
+
+const BeforeAfterSlider = React.lazy(() => 
+  import('../components/BeforeAfterSlider').then(m => ({ default: m.BeforeAfterSlider }))
+);
+
+import { PartnerMarquee } from '../components/PartnerMarquee';
 
 import heroImg from '../assets/images/home_hero_kegs_1779722365542.png';
-import sanitationImg from '../assets/images/service_sanitation_1779717414016.jpg';
-import repairImg from '../assets/images/service_repair_1779717434332.jpg';
+import sanitationImg from '../assets/images/service_sanitation_1779717414016.png';
+import repairImg from '../assets/images/service_repair_1779717434332.png';
 import valveImg from '../assets/images/service_valves_1779717454901.png';
 import partsImg from '../assets/images/service_parts_1779717475851.webp';
 import warehouseImg from '../assets/images/home_hero_kegs_1779722365542.png';
+import stainlessKegImg from '../assets/images/stainless_steel_kegs_1791562507509.jpg';
+import dispensingTapImg from '../assets/images/dispensing_taps_1791562526041.jpg';
+import kegToolsImg from '../assets/images/keg_tools_1791562540965.jpg';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -40,28 +52,97 @@ const staggerContainer = {
   }
 };
 
+const homeFaqs = [
+  {
+    q: "How does Hero Keg provide mobile keg maintenance across Ethiopia?",
+    a: "Hero Keg deploys certified mobile technical units directly to brewery and draught facilities across Ethiopia. We execute on-site ultrasonic sanitation, valve overhaul, and pressure testing without taking your fleet out of service."
+  },
+  {
+    q: "Can damaged keg chimes, neck alignments, and bottom dents be restored?",
+    a: "Yes. Our technicians use specialized hydraulic re-rolling equipment to straighten top and bottom chimes, calibrate and reform bottom dents to restore exact volume (20L, 30L, 50L), and realign neck collars to eliminate dispensing leaks."
+  },
+  {
+    q: "What types and standards of stainless steel kegs do you supply?",
+    a: "We supply high-grade AISI 304 food-grade stainless steel kegs in standard DIN, FINN, and EURO configurations across 20L, 30L, and 50L sizes with customizable embossing and neck color branding."
+  },
+  {
+    q: "Do you supply genuine keg replacement parts and technician toolkits?",
+    a: "Yes, we stock genuine spears, food-safe EPDM gaskets, safety O-rings, torque keys, valve extraction tools, and high-performance draught dispensing taps for on-site brewery operations."
+  }
+];
+
 export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'home' | 'about' | 'services' | 'contact' | 'why-choose-us') => void }) {
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+
+  const homeSchema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Hero Keg Service and Trading PLC",
+      "url": "https://www.herokegservice.com",
+      "description": "Professional mobile keg maintenance, sanitation, repair, and genuine parts solutions for breweries and draught beverage operations across Ethiopia.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Hero Keg Service and Trading PLC",
+        "logo": "/hero_keg_logo_1780328932509.png"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": homeFaqs.map(item => ({
+        "@type": "Question",
+        "name": item.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.a
+        }
+      }))
+    }
+  ];
+
+  const isWhyChooseUs = typeof window !== 'undefined' && (
+    window.location.pathname.toLowerCase().includes('why-choose-us') ||
+    window.location.hash.toLowerCase().includes('why-choose-us')
+  );
+
+  const activeTitle = isWhyChooseUs
+    ? 'Why Choose Hero Keg – Certified Keg Maintenance Partner in Ethiopia'
+    : 'Hero Keg Service & Trading PLC – Mobile Keg Maintenance in Ethiopia';
+
+  const activeDescription = isWhyChooseUs
+    ? 'Discover why leading breweries across Ethiopia partner with Hero Keg: mobile technical expertise, rapid 24-72h turnaround, brewery-grade sanitation, and genuine parts reliability.'
+    : 'Premier mobile keg service directly to your facility in Ethiopia. Comprehensive ultrasonic sanitation, neck & chime repair, valve servicing, and AISI 304 keg supply.';
+
+  const activeUrlPath = isWhyChooseUs ? '/why-choose-us' : '/';
+
   useSEO({
-    title: 'Hero Keg Service and Trading PLC - Professional Mobile Keg Services',
-    description: 'We provide Mobile Keg Service directly to your facility in Ethiopia. Professional keg maintenance, chime & neck repair, sanitation, valve servicing, and genuine spare parts.',
-    keywords: 'mobile keg service, keg repair, brewery maintenance, keg sanitation, draught beer Ethiopia, Hero Keg',
+    title: activeTitle,
+    description: activeDescription,
+    keywords: 'mobile keg service Ethiopia, keg repair Addis Ababa, brewery maintenance Ethiopia, keg sanitation, stainless steel kegs Ethiopia, chime straightening, spear overhaul, Hero Keg, why choose hero keg',
     image: '/og-home.png',
-    imageAlt: 'Hero Keg Service - Professional Mobile Keg Maintenance & Inspection',
-    urlPath: '/'
+    imageAlt: 'Hero Keg Service - Professional Mobile Keg Maintenance & Inspection in Ethiopia',
+    urlPath: activeUrlPath,
+    schema: homeSchema
   });
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       {/* Hero Section */}
-      <section className="relative">
-        <div className="absolute inset-0 z-0">
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 z-0 overflow-hidden bg-slate-900">
           <motion.img 
             initial={{ scale: 1.05 }}
             animate={{ scale: 1 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
             src={heroImg} 
-            alt="Hero Keg Inspection" 
-            className="w-full h-full object-cover object-center"
+            alt="Hero Keg Professional Mobile Keg Maintenance and Inspection in Ethiopia" 
+            width={1920}
+            height={1080}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            className="w-full h-full object-cover object-center block"
             referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-transparent"></div>
@@ -74,11 +155,14 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
             variants={staggerContainer}
             className="max-w-2xl"
           >
+            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C5A059]/20 border border-[#C5A059]/30 text-[#C5A059] text-xs font-semibold uppercase tracking-wider mb-4">
+              <ShieldCheck className="w-3.5 h-3.5" /> Mobile Keg Services in Ethiopia
+            </motion.div>
             <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl font-serif text-white leading-tight mb-6">
-              Your Mobile<br />Keg Service
+              Your Mobile<br />Keg Service Partner
             </motion.h1>
             <motion.p variants={fadeInUp} className="text-lg text-slate-200 mb-10 leading-relaxed max-w-xl">
-              We provide Mobile Keg Service directly to your facility. Professional keg maintenance, sanitation, repair, and genuine parts solutions that help breweries reduce losses, protect beer quality, and improve operational uptime.
+              We provide certified mobile keg maintenance directly to brewery facilities across Ethiopia. Professional sanitation, structural repair, valve servicing, and genuine parts solutions that minimize beer loss, protect beverage purity, and maximize operational uptime.
             </motion.p>
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4">
               <a 
@@ -147,7 +231,7 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
 
       {/* Core Services */}
       <section className="py-24 bg-slate-50 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -164,12 +248,12 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
             variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
           >
             {/* Service 1 */}
             <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-48 overflow-hidden">
-                <img src={sanitationImg} alt="Sanitation" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
+                <img src={sanitationImg} alt="Brewery Keg Maintenance and Ultrasonic Internal Sanitation in Ethiopia" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
                 <div className="absolute bottom-0 left-0 bg-[#111827] text-white p-2 group-hover:bg-[#C5A059] transition-colors duration-300">
                   <Droplet className="w-5 h-5 group-hover:animate-bounce" />
                 </div>
@@ -192,14 +276,16 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
 
             {/* Service 2 */}
             <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-48 overflow-hidden">
-                <img src={repairImg} alt="Repair" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
+                <img src={repairImg} alt="Commercial Keg Structural Repair, Neck Straightening, and Chime Re-rolling" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
                 <div className="absolute bottom-0 left-0 bg-[#111827] text-white p-2 group-hover:bg-[#C5A059] transition-colors duration-300">
                   <Wrench className="w-5 h-5 group-hover:rotate-45 transition-transform duration-300" />
                 </div>
               </div>
               <div className="p-6 flex flex-col flex-grow">
-                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-[#C5A059] transition-colors duration-300">Keg Repair & Structural Restoration</h3>
+                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-[#C5A059] transition-colors duration-300">
+                  2. Keg Repair & Structural<br className="hidden sm:inline" /> Restoration
+                </h3>
                 <p className="text-sm text-slate-600 mb-6 flex-grow">Dent removal, neck straightening, chime restoration, inspection, and pressure integrity checks.</p>
                 <a 
                   href="#services" 
@@ -216,8 +302,8 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
 
             {/* Service 3 */}
             <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-48 overflow-hidden">
-                <img src={valveImg} alt="Valves" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
+                <img src={valveImg} alt="Spear and CO2 Pressure Valve Servicing for Brewery Kegs" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
                 <div className="absolute bottom-0 left-0 bg-[#111827] text-white p-2 group-hover:bg-[#C5A059] transition-colors duration-300">
                   <Layers className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
                 </div>
@@ -240,8 +326,8 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
 
             {/* Service 4 */}
             <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-48 overflow-hidden">
-                <img src={partsImg} alt="Genuine Parts" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
+                <img src={partsImg} alt="Genuine Keg Spare Parts, EPDM Gaskets, and Food-Safe O-Rings Supply" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
                 <div className="absolute bottom-0 left-0 bg-[#111827] text-white p-2 group-hover:bg-[#C5A059] transition-colors duration-300">
                   <Package className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
                 </div>
@@ -261,71 +347,84 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
                 </a>
               </div>
             </motion.div>
+
+            {/* Service 5: Stainless Steel Keg Supply */}
+            <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
+              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
+                <img src={stainlessKegImg} alt="High-Grade AISI 304 Stainless Steel Keg Supply in 20L, 30L, and 50L Sizes" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
+                <div className="absolute bottom-0 left-0 bg-[#111827] text-white p-2 group-hover:bg-[#C5A059] transition-colors duration-300">
+                  <Disc className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
+                </div>
+              </div>
+              <div className="p-6 flex flex-col flex-grow">
+                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-[#C5A059] transition-colors duration-300">Stainless Steel Keg Supply</h3>
+                <p className="text-sm text-slate-600 mb-6 flex-grow">High-grade AISI 304 food-grade stainless steel kegs in standard DIN, FINN, and EURO sizes (20L, 30L, 50L) with customizable embossing and neck color branding.</p>
+                <a 
+                  href="#services" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate?.('services');
+                  }}
+                  className="inline-flex items-center text-sm font-semibold text-slate-900 hover:text-[#C5A059] transition-colors cursor-pointer"
+                >
+                  Learn More <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Service 6: Maintenance & Service Kits */}
+            <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
+              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
+                <img src={kegToolsImg} alt="Brewery Keg Maintenance Tools, Torque Keys, and Spear Extraction Kits" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
+                <div className="absolute bottom-0 left-0 bg-[#111827] text-white p-2 group-hover:bg-[#C5A059] transition-colors duration-300">
+                  <PenTool className="w-5 h-5 group-hover:rotate-45 transition-transform duration-300" />
+                </div>
+              </div>
+              <div className="p-6 flex flex-col flex-grow">
+                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-[#C5A059] transition-colors duration-300">Maintenance & Service Kits</h3>
+                <p className="text-sm text-slate-600 mb-6 flex-grow">Complete valve extraction tools, seal replacement kits, torque keys, and specialized maintenance kits to support on-site brewery technicians.</p>
+                <a 
+                  href="#services" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate?.('services');
+                  }}
+                  className="inline-flex items-center text-sm font-semibold text-slate-900 hover:text-[#C5A059] transition-colors cursor-pointer"
+                >
+                  Learn More <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Service 7: Dispensing Taps */}
+            <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
+              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
+                <img src={dispensingTapImg} alt="Durable High-Performance Draught Beer Dispensing Taps for Breweries" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
+                <div className="absolute bottom-0 left-0 bg-[#111827] text-white p-2 group-hover:bg-[#C5A059] transition-colors duration-300">
+                  <Beer className="w-5 h-5 group-hover:animate-bounce transition-transform duration-300" />
+                </div>
+              </div>
+              <div className="p-6 flex flex-col flex-grow">
+                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-[#C5A059] transition-colors duration-300">Dispensing Taps</h3>
+                <p className="text-sm text-slate-600 mb-6 flex-grow">Supply of durable, high-performance dispensing taps for brewery and beverage dispensing applications.</p>
+                <a 
+                  href="#services" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate?.('services');
+                  }}
+                  className="inline-flex items-center text-sm font-semibold text-slate-900 hover:text-[#C5A059] transition-colors cursor-pointer"
+                >
+                  Learn More <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
+                </a>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
       {/* Our Partners */}
-      <section className="py-12 bg-white border-b border-slate-100 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-8"
-          >
-            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Trusted By Leading Breweries</h3>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.8 }}
-            className="flex overflow-hidden relative w-full"
-          >
-            <div className="flex w-max animate-marquee items-center hover:[animation-play-state:paused] py-4">
-              {[...Array(8)].map((_, i) => (
-                <React.Fragment key={i}>
-                  <div className="flex flex-col items-center justify-center mx-10 md:mx-20 min-w-[160px] opacity-70 hover:opacity-100 transition-all duration-300">
-                    <img 
-                      src="/dashen-logo.png" 
-                      alt="Dashen Breweries S.C" 
-                      className="h-16 md:h-20 object-contain" 
-                      onError={(e) => { 
-                        e.currentTarget.style.display = 'none'; 
-                        e.currentTarget.nextElementSibling?.classList.remove('hidden'); 
-                        e.currentTarget.nextElementSibling?.classList.add('flex'); 
-                      }} 
-                    />
-                    <div className="flex flex-col items-center justify-center mt-3">
-                       <span className="text-xl font-black tracking-tight text-slate-800 uppercase">Dashen</span>
-                       <span className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-widest mt-0.5 text-center">Breweries S.C</span>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col items-center justify-center mx-10 md:mx-20 min-w-[160px] opacity-70 hover:opacity-100 transition-all duration-300">
-                    <img 
-                      src="/heineken-logo.png" 
-                      alt="Heineken" 
-                      className="h-16 md:h-20 object-contain" 
-                      onError={(e) => { 
-                        e.currentTarget.style.display = 'none'; 
-                        e.currentTarget.nextElementSibling?.classList.remove('hidden'); 
-                        e.currentTarget.nextElementSibling?.classList.add('flex'); 
-                      }} 
-                    />
-                    <div className="flex flex-col items-center justify-center mt-3">
-                       <span className="text-2xl font-bold tracking-tighter text-slate-800 font-serif">Heineken</span>
-                    </div>
-                  </div>
-                </React.Fragment>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <PartnerMarquee />
 
       {/* Why Choose Us */}
       <section id="why-choose-us" className="scroll-mt-24 py-24 bg-white overflow-hidden">
@@ -359,9 +458,12 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
               </ul>
               
               <motion.div variants={fadeInUp}>
-                <a href="#" className="inline-flex items-center justify-center px-6 py-3 bg-[#C5A059] text-white font-medium rounded-sm hover:bg-[#a38043] hover:shadow-lg transition-all duration-300 uppercase tracking-wide text-sm group">
+                <button 
+                  onClick={() => onNavigate?.('about')}
+                  className="inline-flex items-center justify-center px-6 py-3 bg-[#C5A059] text-white font-medium rounded-sm hover:bg-[#a38043] hover:shadow-lg transition-all duration-300 uppercase tracking-wide text-sm group cursor-pointer"
+                >
                   Discover More About Us <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
+                </button>
               </motion.div>
             </motion.div>
             
@@ -370,22 +472,102 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="relative group"
+              className="relative group w-full"
             >
                <div className="absolute inset-0 bg-slate-100 transform translate-x-4 translate-y-4 z-0 transition-transform duration-500 group-hover:translate-x-6 group-hover:translate-y-6"></div>
-               <img 
-                 src={warehouseImg} 
-                 alt="Hero Keg Warehouse" 
-                 className="relative z-10 w-full h-[500px] object-contain bg-slate-50 shadow-lg transition-transform duration-500 group-hover:-translate-y-2 group-hover:-translate-x-2"
-                 referrerPolicy="no-referrer"
-               />
+               <div className="relative z-10 w-full overflow-hidden rounded-sm shadow-lg bg-slate-100 aspect-[16/10] sm:aspect-[4/3] md:aspect-[16/10]">
+                 <img 
+                   src={warehouseImg} 
+                   alt="Hero Keg certified mobile keg fleet maintenance and storage facility in Addis Ababa, Ethiopia" 
+                   width={800}
+                   height={500}
+                   loading="lazy"
+                   decoding="async"
+                   className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105 block"
+                   referrerPolicy="no-referrer"
+                 />
+               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Before/After Keg Restoration Slider Section */}
-      <BeforeAfterSlider />
+      {/* SEO Frequently Asked Questions Section */}
+      <section className="py-24 bg-slate-50 border-t border-slate-200/60 overflow-hidden" aria-labelledby="faq-heading">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C5A059]/15 border border-[#C5A059]/30 text-[#C5A059] text-xs font-semibold uppercase tracking-wider mb-4">
+              <ShieldCheck className="w-3.5 h-3.5" /> Frequently Asked Questions
+            </div>
+            <h2 id="faq-heading" className="text-3xl md:text-4xl font-serif text-slate-900 font-bold mb-4">
+              Answers About Our Mobile Keg Services
+            </h2>
+            <p className="text-slate-600 max-w-2xl mx-auto text-base">
+              Learn how Hero Keg supports breweries, taprooms, and beverage operators across Ethiopia with specialized mobile keg maintenance.
+            </p>
+            <div className="w-12 h-1 bg-[#C5A059] mx-auto mt-6"></div>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={staggerContainer}
+            className="max-w-3xl mx-auto space-y-4"
+          >
+            {homeFaqs.map((faq, index) => {
+              const isOpen = openFaqIndex === index;
+              return (
+                <motion.div
+                  key={index}
+                  variants={fadeInUp}
+                  className={`border border-slate-200 rounded-sm bg-white overflow-hidden transition-all duration-300 ${
+                    isOpen ? 'border-[#C5A059]/60 shadow-md' : 'hover:border-slate-300 shadow-sm'
+                  }`}
+                >
+                  <button
+                    onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                    className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none group cursor-pointer"
+                    aria-expanded={isOpen}
+                  >
+                    <span className={`font-bold text-base transition-colors ${
+                      isOpen ? 'text-[#C5A059]' : 'text-slate-900 group-hover:text-[#C5A059]'
+                    }`}>
+                      {faq.q}
+                    </span>
+                    <div className="shrink-0 ml-4">
+                      <ChevronDown className={`w-5 h-5 text-[#C5A059] transition-transform duration-300 ${
+                        isOpen ? 'rotate-180' : ''
+                      }`} />
+                    </div>
+                  </button>
+
+                  {isOpen && (
+                    <div className="px-6 pb-5 text-slate-600 leading-relaxed text-sm border-t border-slate-100 pt-4 bg-slate-50/50">
+                      {faq.a}
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Before/After Keg Restoration Slider Section (Lazy Loaded) */}
+      <Suspense fallback={
+        <div className="py-24 bg-slate-900 text-center flex items-center justify-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#C5A059]" />
+        </div>
+      }>
+        <BeforeAfterSlider />
+      </Suspense>
     </motion.div>
   );
 });

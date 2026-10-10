@@ -1,18 +1,33 @@
 import React, { useState, useEffect, Suspense, lazy, useCallback } from 'react';
 import { Facebook, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
 
-const Home = lazy(() => import('./pages/Home'));
-const AboutUs = lazy(() => import('./pages/AboutUs'));
-const Services = lazy(() => import('./pages/Services'));
-const ContactUs = lazy(() => import('./pages/ContactUs'));
+const loadHome = () => import('./pages/Home');
+const loadAbout = () => import('./pages/AboutUs');
+const loadServices = () => import('./pages/Services');
+const loadContact = () => import('./pages/ContactUs');
+const loadSiteIndex = () => import('./pages/SiteIndex');
+
+const Home = lazy(loadHome);
+const AboutUs = lazy(loadAbout);
+const Services = lazy(loadServices);
+const ContactUs = lazy(loadContact);
+const SiteIndex = lazy(loadSiteIndex);
 
 import logoImg from './assets/images/hero_keg_logo_1780328932509.png';
 
 export const HeroKegLogo = ({ className = "" }: { className?: string }) => (
-  <img src={logoImg} alt="Hero Keg Logo" className={`object-contain ${className}`} />
+  <img 
+    src={logoImg} 
+    alt="Hero Keg Service and Trading PLC Logo" 
+    width={48}
+    height={48}
+    loading="eager"
+    decoding="async"
+    className={`object-contain object-center shrink-0 block ${className}`} 
+  />
 );
 
-type Page = 'home' | 'about' | 'services' | 'contact' | 'why-choose-us';
+type Page = 'home' | 'about' | 'services' | 'contact' | 'why-choose-us' | 'sitemap';
 
 function getPageFromUrl(): Page {
   const path = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
@@ -21,6 +36,7 @@ function getPageFromUrl(): Page {
   if (path === 'services' || hash === 'services') return 'services';
   if (path === 'contact' || hash === 'contact') return 'contact';
   if (path === 'why-choose-us' || hash === 'why-choose-us') return 'why-choose-us';
+  if (path === 'sitemap' || path === 'site-index' || hash === 'sitemap') return 'sitemap';
   return 'home';
 }
 
@@ -74,8 +90,10 @@ export default function App() {
 
             {/* Links */}
             <div className="hidden md:flex items-center space-x-8">
-              <button 
-                onClick={() => handleNavigate('home')}
+              <a 
+                href="/"
+                onClick={(e) => { e.preventDefault(); handleNavigate('home'); }}
+                onMouseEnter={loadHome}
                 className={`text-sm font-medium transition-colors pb-1 border-b-2 ${
                   currentPage === 'home' 
                     ? 'text-slate-900 border-slate-900' 
@@ -83,9 +101,11 @@ export default function App() {
                 }`}
               >
                 Home
-              </button>
-              <button 
-                onClick={() => handleNavigate('about')}
+              </a>
+              <a 
+                href="/about"
+                onClick={(e) => { e.preventDefault(); handleNavigate('about'); }}
+                onMouseEnter={loadAbout}
                 className={`text-sm font-medium transition-colors pb-1 border-b-2 ${
                   currentPage === 'about' 
                     ? 'text-slate-900 border-slate-900' 
@@ -93,9 +113,11 @@ export default function App() {
                 }`}
               >
                 About Us
-              </button>
-              <button 
-                onClick={() => handleNavigate('services')}
+              </a>
+              <a 
+                href="/services"
+                onClick={(e) => { e.preventDefault(); handleNavigate('services'); }}
+                onMouseEnter={loadServices}
                 className={`text-sm font-medium transition-colors pb-1 border-b-2 ${
                   currentPage === 'services' 
                     ? 'text-slate-900 border-slate-900' 
@@ -103,9 +125,11 @@ export default function App() {
                 }`}
               >
                 Services
-              </button>
-              <button 
-                onClick={scrollToWhyChooseUs}
+              </a>
+              <a 
+                href="/why-choose-us"
+                onClick={(e) => { e.preventDefault(); scrollToWhyChooseUs(); }}
+                onMouseEnter={loadHome}
                 className={`text-sm font-medium transition-colors pb-1 border-b-2 ${
                   currentPage === 'why-choose-us' 
                     ? 'text-slate-900 border-slate-900' 
@@ -113,25 +137,31 @@ export default function App() {
                 }`}
               >
                 Why Choose Us
-              </button>
-              <button 
-                onClick={() => handleNavigate('contact')}
+              </a>
+              <a 
+                href="/contact"
+                onClick={(e) => { e.preventDefault(); handleNavigate('contact'); }}
+                onMouseEnter={loadContact}
                 className={`text-sm font-medium transition-colors pb-1 border-b-2 ${
                   currentPage === 'contact' 
                     ? 'text-slate-900 border-slate-900' 
                     : 'text-slate-600 hover:text-slate-900 border-transparent'
                 }`}
-              >Contact Us</button>
+              >
+                Contact Us
+              </a>
             </div>
 
             {/* CTA */}
             <div className="hidden md:block">
-              <button 
-                onClick={() => handleNavigate('contact')}
-                className="bg-[#C5A059] text-white text-sm font-semibold px-6 py-3 rounded-sm hover:bg-[#a38043] transition-colors uppercase tracking-wide cursor-pointer"
+              <a 
+                href="/contact"
+                onClick={(e) => { e.preventDefault(); handleNavigate('contact'); }}
+                onMouseEnter={loadContact}
+                className="bg-[#C5A059] text-white text-sm font-semibold px-6 py-3 rounded-sm hover:bg-[#a38043] transition-colors uppercase tracking-wide cursor-pointer inline-block"
               >
                 Request a Quote
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -139,13 +169,19 @@ export default function App() {
 
       {/* Main Content */}
       <main>
-        <Suspense fallback={<div className="flex items-center justify-center min-h-[50vh]"><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#C5A059]"></div></div>}>
+        <Suspense fallback={
+          <div className="flex items-center justify-center min-h-[50vh]" role="status" aria-label="Loading page content">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#C5A059]"></div>
+          </div>
+        }>
           {(currentPage === 'home' || currentPage === 'why-choose-us') ? (
             <Home onNavigate={handleNavigate} />
           ) : currentPage === 'about' ? (
             <AboutUs onNavigate={handleNavigate} />
           ) : currentPage === 'contact' ? (
             <ContactUs />
+          ) : currentPage === 'sitemap' ? (
+            <SiteIndex onNavigate={handleNavigate} />
           ) : (
             <Services onNavigate={handleNavigate} />
           )}
@@ -159,29 +195,30 @@ export default function App() {
             
             {/* Col 1 */}
             <div>
-              <div 
+              <a 
+                href="/"
                 className="flex items-center gap-2 mb-6 cursor-pointer"
-                onClick={() => handleNavigate('home')}
+                onClick={(e) => { e.preventDefault(); handleNavigate('home'); }}
               >
                 <HeroKegLogo className="h-12 w-12 text-white" />
                 <div className="leading-tight">
                   <div className="font-bold text-xl tracking-tight text-white">HERO KEG</div>
                   <div className="text-[0.6rem] font-semibold text-slate-400 tracking-wider">SERVICE AND TRADING PLC</div>
                 </div>
-              </div>
+              </a>
               <p className="text-slate-400 text-sm leading-relaxed mb-6">
                 Professional keg maintenance, sanitation, repair, and genuine parts solutions for breweries and draught beverage operations across Ethiopia.
               </p>
               <div className="flex space-x-4">
-                <button className="bg-white/5 hover:bg-white/10 p-2 rounded-full transition-colors text-[#C5A059]">
+                <button className="bg-white/5 hover:bg-white/10 p-2 rounded-full transition-colors text-[#C5A059]" aria-label="Facebook">
                   <Facebook className="w-4 h-4" />
                 </button>
-                <a href="https://www.linkedin.com/company/hero-keg-service-and-trading-plc/" target="_blank" rel="noopener noreferrer" className="bg-white/5 hover:bg-white/10 p-2 rounded-full transition-colors text-[#C5A059] inline-flex items-center justify-center">
+                <a href="https://www.linkedin.com/company/hero-keg-service-and-trading-plc/" target="_blank" rel="noopener noreferrer" className="bg-white/5 hover:bg-white/10 p-2 rounded-full transition-colors text-[#C5A059] inline-flex items-center justify-center" aria-label="LinkedIn">
                   <Linkedin className="w-4 h-4" />
                 </a>
-                <button className="bg-white/5 hover:bg-white/10 p-2 rounded-full transition-colors text-[#C5A059]">
+                <a href="mailto:herokegservice@gmail.com" className="bg-white/5 hover:bg-white/10 p-2 rounded-full transition-colors text-[#C5A059] inline-flex items-center justify-center" aria-label="Email">
                   <Mail className="w-4 h-4" />
-                </button>
+                </a>
               </div>
             </div>
 
@@ -189,11 +226,12 @@ export default function App() {
             <div>
               <h4 className="text-xs font-bold text-white tracking-widest uppercase mb-6">Quick Links</h4>
               <ul className="space-y-3">
-                <li><button onClick={() => handleNavigate('home')} className="text-sm text-slate-400 hover:text-white transition-colors">Home</button></li>
-                <li><button onClick={() => handleNavigate('about')} className="text-sm text-slate-400 hover:text-white transition-colors">About Us</button></li>
-                <li><button onClick={() => handleNavigate('services')} className="text-sm text-slate-400 hover:text-white transition-colors">Services</button></li>
-                <li><button onClick={scrollToWhyChooseUs} className="text-sm text-slate-400 hover:text-white transition-colors">Why Choose Us</button></li>
-                <li><button onClick={() => handleNavigate('contact')} className="text-sm text-slate-400 hover:text-white transition-colors">Contact Us</button></li>
+                <li><a href="/" onClick={(e) => { e.preventDefault(); handleNavigate('home'); }} className="text-sm text-slate-400 hover:text-white transition-colors">Home</a></li>
+                <li><a href="/about" onClick={(e) => { e.preventDefault(); handleNavigate('about'); }} className="text-sm text-slate-400 hover:text-white transition-colors">About Us</a></li>
+                <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors">Services</a></li>
+                <li><a href="/why-choose-us" onClick={(e) => { e.preventDefault(); scrollToWhyChooseUs(); }} className="text-sm text-slate-400 hover:text-white transition-colors">Why Choose Us</a></li>
+                <li><a href="/contact" onClick={(e) => { e.preventDefault(); handleNavigate('contact'); }} className="text-sm text-slate-400 hover:text-white transition-colors">Contact Us</a></li>
+                <li><a href="/sitemap" onClick={(e) => { e.preventDefault(); handleNavigate('sitemap'); }} className="text-sm text-[#C5A059] hover:underline transition-colors">Site Index (All Pages)</a></li>
               </ul>
             </div>
 
@@ -201,11 +239,11 @@ export default function App() {
             <div>
               <h4 className="text-xs font-bold text-white tracking-widest uppercase mb-6">Our Services</h4>
               <ul className="space-y-3">
-                <li><button onClick={() => handleNavigate('services')} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left">Keg Sanitation & Cleaning</button></li>
-                <li><button onClick={() => handleNavigate('services')} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left">Structural Repair & Welding</button></li>
-                <li><button onClick={() => handleNavigate('services')} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left">Valve Maintenance & Replacement</button></li>
-                <li><button onClick={() => handleNavigate('services')} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left">Pressure & Leak Testing</button></li>
-                <li><button onClick={() => handleNavigate('services')} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left">Genuine Spare Parts Supply</button></li>
+                <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left block">Keg Maintenance & Sanitation</a></li>
+                <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left block">Keg Repair & Structural Restoration</a></li>
+                <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left block">Spear & Valve Services</a></li>
+                <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left block">Pressure & Leak Testing</a></li>
+                <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left block">Maintenance & Service Kits</a></li>
               </ul>
             </div>
 
@@ -219,21 +257,34 @@ export default function App() {
                 </li>
                 <li className="flex items-center">
                   <Phone className="w-5 h-5 text-[#C5A059] mr-3 flex-shrink-0" />
-                  <span className="text-sm text-slate-400">+251 943 739 086</span>
+                  <a href="tel:+251943739086" className="text-sm text-slate-400 hover:text-white transition-colors">+251 943 739 086</a>
                 </li>
                 <li className="flex items-center">
                   <Mail className="w-5 h-5 text-[#C5A059] mr-3 flex-shrink-0" />
-                  <span className="text-sm text-slate-400">herokegservice@gmail.com</span>
+                  <a href="mailto:herokegservice@gmail.com" className="text-sm text-slate-400 hover:text-white transition-colors">herokegservice@gmail.com</a>
                 </li>
               </ul>
             </div>
 
           </div>
 
-          <div className="pt-8 border-t border-slate-800 text-center">
+          <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
             <p className="text-xs text-slate-500">
               © 2026 Hero Keg Service and Trading PLC. All Rights Reserved.
             </p>
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400">
+              <a href="/sitemap" onClick={(e) => { e.preventDefault(); handleNavigate('sitemap'); }} className="hover:text-[#C5A059] transition-colors">
+                HTML Site Index
+              </a>
+              <span className="text-slate-600">•</span>
+              <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer" className="hover:text-[#C5A059] transition-colors">
+                XML Sitemap
+              </a>
+              <span className="text-slate-600">•</span>
+              <a href="/robots.txt" target="_blank" rel="noopener noreferrer" className="hover:text-[#C5A059] transition-colors">
+                Robots.txt
+              </a>
+            </div>
           </div>
         </div>
       </footer>

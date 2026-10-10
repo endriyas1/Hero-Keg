@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeftRight, Check, Sparkles, AlertCircle, RefreshCw, Layers, ShieldCheck, Hammer, ChevronLeft, ChevronRight } from 'lucide-react';
 import beforeBody from '../assets/images/keg_before_restoration_1779874960410.png';
 import afterBody from '../assets/images/keg_after_restoration_1779874979965.png';
-import beforeValve from '../assets/images/valve_before_1779884838991.png';
-import afterValve from '../assets/images/valve_after_1779884859346.png';
+import beforeValve from '../assets/images/valve_before_1779884838991.jpg';
+import afterValve from '../assets/images/valve_after_1779884859346.jpg';
 import beforeChime from '../assets/images/chime_before_1779884875862.png';
 import afterChime from '../assets/images/chime_after_1779884891335.png';
 
@@ -181,7 +181,11 @@ export function BeforeAfterSlider() {
                   transition={{ duration: 0.4 }}
                   src={currentSlide.afterImg} 
                   alt={`Restored polished clean ${currentSlide.title} after maintenance`} 
-                  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                  width={640}
+                  height={480}
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none block"
                   referrerPolicy="no-referrer"
                 />
               </AnimatePresence>
@@ -193,7 +197,7 @@ export function BeforeAfterSlider() {
 
               {/* Before Product Image (Overlay Layer with clip-path matching slider) */}
               <div 
-                className="absolute inset-0 w-full h-full pointer-events-none z-10"
+                className="absolute inset-0 w-full h-full pointer-events-none z-10 overflow-hidden"
                 style={{ clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)` }}
               >
                 <AnimatePresence mode="wait">
@@ -205,7 +209,11 @@ export function BeforeAfterSlider() {
                     transition={{ duration: 0.4 }}
                     src={currentSlide.beforeImg} 
                     alt={`Dented and dirty old ${currentSlide.title} before restoration`} 
-                    className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                    width={640}
+                    height={480}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none block"
                     referrerPolicy="no-referrer"
                   />
                 </AnimatePresence>

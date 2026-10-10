@@ -15,7 +15,6 @@ import {
 } from 'lucide-react';
 
 import contactHeroImg from '../assets/images/contact_hero_1779725491927.png';
-import mapBgImg from '../assets/images/map_background_1779725518254.png';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -64,13 +63,52 @@ function AnimatedCheckmark({ className = "w-5 h-5" }: { className?: string }) {
 }
 
 export default React.memo(function ContactUs() {
+  const contactSchema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "mainEntity": {
+        "@type": "LocalBusiness",
+        "name": "Hero Keg Service and Trading PLC",
+        "telephone": "+251943739086",
+        "email": "herokegservice@gmail.com",
+        "priceRange": "$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Bole Bulbula Medhanialem Mall, 4th Floor, Office No. 420",
+          "addressLocality": "Addis Ababa",
+          "addressCountry": "ET"
+        }
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.herokegservice.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Contact Us",
+          "item": "https://www.herokegservice.com/contact"
+        }
+      ]
+    }
+  ];
+
   useSEO({
-    title: 'Contact Us | Hero Keg Service and Trading PLC',
-    description: 'Get in touch with Hero Keg Service and Trading PLC for brewery keg maintenance, emergency repairs, parts supply, or to schedule mobile service at your facility in Ethiopia.',
-    keywords: 'contact hero keg, keg service ethiopia, brewery support, keg repair quote, Addis Ababa keg maintenance',
+    title: 'Contact Hero Keg – Mobile Keg Service & Brewery Support in Ethiopia',
+    description: 'Contact Hero Keg Service and Trading PLC in Addis Ababa, Ethiopia. Request an on-site mobile service quote, schedule keg inspection, or order genuine parts.',
+    keywords: 'contact hero keg, keg service Ethiopia, brewery support Addis Ababa, keg repair quote, commercial keg maintenance',
     image: '/og-contact.png',
-    imageAlt: 'Hero Keg Service and Trading PLC - Contact and Facility Location',
-    urlPath: '/contact'
+    imageAlt: 'Hero Keg Service and Trading PLC - Facility Location and Contact in Addis Ababa',
+    urlPath: '/contact',
+    schema: contactSchema
   });
 
   const [formData, setFormData] = useState({
@@ -179,26 +217,31 @@ export default React.memo(function ContactUs() {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="bg-white font-sans text-gray-800">
 
       {/* Hero Section */}
-      <section className="relative w-full aspect-[4/3] sm:aspect-video max-h-[600px] overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-slate-900">
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 z-0 bg-slate-900 overflow-hidden">
           <motion.img 
             initial={{ scale: 1.05 }}
             animate={{ scale: 1 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
             src={contactHeroImg} 
-            alt="Contact Us Hero" 
-            className="w-full h-full object-contain lg:object-cover lg:object-[center_20%]"
+            alt="Hero Keg mobile technical service inquiry and booking headquarters in Addis Ababa Ethiopia" 
+            width={1920}
+            height={1080}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            className="w-full h-full object-cover object-center block"
             referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-slate-900/30"></div>
         </div>
         
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 md:py-48">
           <motion.div 
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
-            className="max-w-2xl mt-16"
+            className="max-w-2xl"
           >
             <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl font-serif text-white leading-tight mb-6">
               Contact Us

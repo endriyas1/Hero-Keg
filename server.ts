@@ -136,6 +136,19 @@ ${message}
   }
 });
 
+// Explicit Search Engine & Crawler Endpoints
+app.get('/sitemap.xml', (_req: express.Request, res: express.Response) => {
+  const sitemapPath = path.join(process.cwd(), 'public', 'sitemap.xml');
+  res.header('Content-Type', 'application/xml; charset=utf-8');
+  res.sendFile(sitemapPath);
+});
+
+app.get('/robots.txt', (_req: express.Request, res: express.Response) => {
+  const robotsPath = path.join(process.cwd(), 'public', 'robots.txt');
+  res.header('Content-Type', 'text/plain; charset=utf-8');
+  res.sendFile(robotsPath);
+});
+
 // Vite middleware flow or Production static file server
 async function startServer() {
   if (process.env.NODE_ENV !== 'production') {

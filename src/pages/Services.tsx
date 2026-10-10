@@ -14,14 +14,35 @@ import {
   Zap,
   CheckCircle,
   ChevronDown,
-  ArrowRight
+  ArrowRight,
+  Disc,
+  PenTool,
+  Beer,
+  FileText,
+  Scan,
+  Droplets,
+  Gauge,
+  Hammer,
+  Flame,
+  Sparkles,
+  Recycle,
+  BarChart3,
+  Package,
+  Wrench,
+  ShieldCheck,
+  Maximize2,
+  Boxes,
+  Layers
 } from 'lucide-react';
 
 import heroImg from '../assets/images/services_hero_1779722089553.png';
-import sanitationImg from '../assets/images/service_sanitation_1779717414016.jpg';
-import repairImg from '../assets/images/service_repair_1779717434332.jpg';
+import sanitationImg from '../assets/images/service_sanitation_1779717414016.png';
+import repairImg from '../assets/images/service_repair_1779717434332.png';
 import valveImg from '../assets/images/service_valves_1779717454901.png';
 import partsImg from '../assets/images/service_parts_1779717475851.webp';
+import stainlessKegImg from '../assets/images/stainless_steel_kegs_1791562507509.jpg';
+import dispensingTapImg from '../assets/images/dispensing_taps_1791562526041.jpg';
+import kegToolsImg from '../assets/images/keg_tools_1791562540965.jpg';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -41,7 +62,7 @@ const staggerContainer = {
 // Animated Service Icon Components
 function AnimatedSanitationIcon() {
   return (
-    <div className="absolute -bottom-6 left-6 w-12 h-12 bg-[#111827] group-hover:bg-[#C5A059] transition-colors duration-300 rounded-full flex items-center justify-center border-4 border-white z-10">
+    <div className="absolute -bottom-6 left-6 w-12 h-12 bg-[#111827] group-hover:bg-[#C5A059] transition-colors duration-300 rounded-full flex items-center justify-center border-4 border-white z-20 shadow-lg">
       <div className="absolute inset-0 bg-[#C5A059]/20 rounded-full scale-0 group-hover:scale-125 transition-transform duration-500 blur-[2px]" />
       <svg
         className="w-5 h-5 text-white relative z-10"
@@ -87,7 +108,7 @@ function AnimatedSanitationIcon() {
 
 function AnimatedRepairIcon() {
   return (
-    <div className="absolute -bottom-6 left-6 w-12 h-12 bg-[#111827] group-hover:bg-[#C5A059] transition-colors duration-300 rounded-full flex items-center justify-center border-4 border-white z-10">
+    <div className="absolute -bottom-6 left-6 w-12 h-12 bg-[#111827] group-hover:bg-[#C5A059] transition-colors duration-300 rounded-full flex items-center justify-center border-4 border-white z-20 shadow-lg">
       <div className="absolute inset-0 bg-[#C5A059]/20 rounded-full scale-0 group-hover:scale-125 transition-transform duration-500 blur-[2px]" />
       <div className="relative w-5 h-5 flex items-center justify-center z-10 text-white">
         {/* Large gear */}
@@ -127,7 +148,7 @@ function AnimatedRepairIcon() {
 
 function AnimatedValveIcon() {
   return (
-    <div className="absolute -bottom-6 left-6 w-12 h-12 bg-[#111827] group-hover:bg-[#C5A059] transition-colors duration-300 rounded-full flex items-center justify-center border-4 border-white z-10">
+    <div className="absolute -bottom-6 left-6 w-12 h-12 bg-[#111827] group-hover:bg-[#C5A059] transition-colors duration-300 rounded-full flex items-center justify-center border-4 border-white z-20 shadow-lg">
       <div className="absolute inset-0 bg-[#C5A059]/20 rounded-full scale-0 group-hover:scale-125 transition-transform duration-500 blur-[2px]" />
       <div className="relative w-5 h-5 flex items-center justify-center z-10 text-white">
         {/* Dynamic pressure flow lines */}
@@ -170,7 +191,7 @@ function AnimatedValveIcon() {
 
 function AnimatedPartsIcon() {
   return (
-    <div className="absolute -bottom-6 left-6 w-12 h-12 bg-[#111827] group-hover:bg-[#C5A059] transition-colors duration-300 rounded-full flex items-center justify-center border-4 border-white z-10">
+    <div className="absolute -bottom-6 left-6 w-12 h-12 bg-[#111827] group-hover:bg-[#C5A059] transition-colors duration-300 rounded-full flex items-center justify-center border-4 border-white z-20 shadow-lg">
       <div className="absolute inset-0 bg-[#C5A059]/20 rounded-full scale-0 group-hover:scale-125 transition-transform duration-500 blur-[2px]" />
       <svg
         className="w-5 h-5 text-white relative z-10"
@@ -233,13 +254,60 @@ const faqs: FAQItem[] = [
 ];
 
 export default React.memo(function Services({ onNavigate }: { onNavigate?: (page: 'home' | 'about' | 'services' | 'contact' | 'why-choose-us') => void }) {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
+  const servicesSchema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.herokegservice.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Services",
+          "item": "https://www.herokegservice.com/services"
+        }
+      ]
+    }
+  ];
+
   useSEO({
-    title: 'Our Services | Hero Keg Service and Trading PLC',
-    description: 'Comprehensive mobile keg services across Ethiopia: automated sanitation & steaming, structural straightening, precision TIG welding, valve & spear maintenance, pressure testing, and OEM spare parts.',
-    keywords: 'keg sanitation, keg structural repair, spear service, genuine keg parts, mobile keg maintenance ethiopia',
+    title: 'Brewery Keg Services & Mobile Repairs in Ethiopia | Hero Keg',
+    description: 'Specialized mobile keg maintenance in Ethiopia: ultrasonic sanitation, neck & chime straightening, spear overhaul, TIG welding, stainless steel kegs (20L, 30L, 50L) & genuine parts.',
+    keywords: 'keg sanitation Ethiopia, mobile keg repair Addis Ababa, brewery maintenance Ethiopia, chime straightening, spear valve service, stainless steel keg supply, Hero Keg Service',
     image: '/og-services.png',
-    imageAlt: 'Hero Keg Complete Service Solutions and Spare Parts',
-    urlPath: '/services'
+    imageAlt: 'Hero Keg Complete Service Solutions and Spare Parts in Ethiopia',
+    urlPath: '/services',
+    schema: servicesSchema
   });
 
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -251,15 +319,20 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="bg-white font-sans text-gray-800">
       {/* Hero Section */}
-      <section className="relative">
+      <section className="relative overflow-hidden">
         <div className="absolute inset-0 z-0 overflow-hidden bg-slate-900">
           <motion.img 
             initial={{ scale: 1.05 }}
             animate={{ scale: 1 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
             src={heroImg} 
-            alt="Hero Keg Inspection" 
-            className="w-full h-full object-cover object-center"
+            alt="Hero Keg certified brewery technicians and mobile keg workshop facility in Ethiopia" 
+            width={1920}
+            height={1080}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            className="w-full h-full object-cover object-center block"
             referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-transparent flex"></div>
@@ -287,7 +360,7 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
 
       {/* Core Services Section */}
       <section className="py-24 bg-slate-50 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -304,33 +377,33 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
             variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mb-8"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-8"
           >
             {/* Service 1 */}
             <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group rounded-sm overflow-hidden relative transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-64 shrink-0">
+              <div className="relative h-52 shrink-0 w-full bg-slate-100">
                 <div className="w-full h-full overflow-hidden">
-                  <img src={sanitationImg} alt="Keg Maintenance & Sanitation" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+                  <img src={sanitationImg} alt="Keg Maintenance & Sanitation" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
                 </div>
                 <AnimatedSanitationIcon />
               </div>
-              <div className="p-8 pt-10 flex flex-col flex-grow">
+              <div className="p-6 pt-9 flex flex-col flex-grow">
                 <h3 className="text-xl font-bold text-[#183346] mb-3 font-serif group-hover:text-[#C5A059] transition-colors duration-300">1. Keg Maintenance &<br/>Sanitation</h3>
-                <p className="text-[15px] text-slate-600 mb-8 border-b border-slate-100 pb-8 flex-grow">
+                <p className="text-[14px] text-slate-600 mb-6 border-b border-slate-100 pb-6 flex-grow">
                   Comprehensive cleaning and sanitation services
                   to protect beer quality and remove
                   contamination risks.
                 </p>
-                <ul className="space-y-4 mb-8 text-[15px] text-slate-700">
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Ultrasonic internal cleaning</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Beer stone (scale) removal</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Sanitation & hygiene validation</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Pressure testing & leak verification</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Residual beer disposal</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Internal visual inspection</li>
+                <ul className="space-y-3 mb-6 text-[14px] text-slate-700">
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Ultrasonic internal cleaning</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Beer stone (scale) removal</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Sanitation & hygiene validation</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Pressure testing & leak verification</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Residual beer disposal</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Internal visual inspection</li>
                 </ul>
-                <div className="bg-slate-50 p-4 flex items-center gap-4 mb-8 group-hover:bg-slate-100 transition-colors">
-                  <Clock className="w-6 h-6 text-slate-400 shrink-0 group-hover:text-[#C5A059] group-hover:rotate-[360deg] transition-all duration-700" />
+                <div className="bg-slate-50 p-3.5 flex items-center gap-3 mb-6 group-hover:bg-slate-100 transition-colors">
+                  <Clock className="w-5 h-5 text-slate-400 shrink-0 group-hover:text-[#C5A059] group-hover:rotate-[360deg] transition-all duration-700" />
                   <div>
                     <div className="text-xs font-bold text-slate-900">Recommended Frequency</div>
                     <div className="text-xs text-slate-500">Every 90 - 120 days</div>
@@ -338,7 +411,7 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
                 </div>
                 <button 
                   onClick={() => onNavigate?.('contact')}
-                  className="w-full bg-[#C5A059] text-white py-4 font-semibold hover:bg-[#a38043] transition-colors flex items-center justify-center rounded-sm cursor-pointer"
+                  className="w-full bg-[#C5A059] text-white py-3.5 font-semibold hover:bg-[#a38043] transition-colors flex items-center justify-center rounded-sm cursor-pointer text-sm"
                 >
                   Schedule Maintenance <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -347,28 +420,28 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
 
             {/* Service 2 */}
             <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group rounded-sm overflow-hidden relative transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-64 shrink-0">
+              <div className="relative h-52 shrink-0 w-full bg-slate-100">
                 <div className="w-full h-full overflow-hidden">
-                  <img src={repairImg} alt="Keg Repair & Structural Restoration" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+                  <img src={repairImg} alt="Commercial Keg Structural Repair, Neck Straightening, and Chime Re-rolling" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
                 </div>
                 <AnimatedRepairIcon />
               </div>
-              <div className="p-8 pt-10 flex flex-col flex-grow">
+              <div className="p-6 pt-9 flex flex-col flex-grow">
                 <h3 className="text-xl font-bold text-[#183346] mb-3 font-serif group-hover:text-[#C5A059] transition-colors duration-300">2. Keg Repair & Structural<br/>Restoration</h3>
-                <p className="text-[15px] text-slate-600 mb-8 border-b border-slate-100 pb-8 flex-grow">
+                <p className="text-[14px] text-slate-600 mb-6 border-b border-slate-100 pb-6 flex-grow">
                   Restore structural integrity, eliminate leaks, and
                   extend the operational life of your kegs.
                 </p>
-                <ul className="space-y-4 mb-8 text-[15px] text-slate-700">
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Dent removal & body repair</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Neck straightening & alignment</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Chime (top & bottom) restoration</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Spear alignment & system check</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Leak correction & pressure testing</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Final inspection & approval</li>
+                <ul className="space-y-3 mb-6 text-[14px] text-slate-700">
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Dent removal & body repair</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Neck straightening & alignment</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Chime (top & bottom) restoration</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Spear alignment & system check</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Leak correction & pressure testing</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Final inspection & approval</li>
                 </ul>
-                <div className="bg-slate-50 p-4 flex items-center gap-4 mb-8 group-hover:bg-slate-100 transition-colors">
-                  <Clock className="w-6 h-6 text-slate-400 shrink-0 group-hover:text-[#C5A059] group-hover:rotate-[360deg] transition-all duration-700" />
+                <div className="bg-slate-50 p-3.5 flex items-center gap-3 mb-6 group-hover:bg-slate-100 transition-colors">
+                  <Clock className="w-5 h-5 text-slate-400 shrink-0 group-hover:text-[#C5A059] group-hover:rotate-[360deg] transition-all duration-700" />
                   <div>
                     <div className="text-xs font-bold text-slate-900">Typical Turnaround</div>
                     <div className="text-xs text-slate-500">24 - 72 hours*</div>
@@ -376,7 +449,7 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
                 </div>
                 <button 
                   onClick={() => onNavigate?.('contact')}
-                  className="w-full bg-[#C5A059] text-white py-4 font-semibold hover:bg-[#a38043] transition-colors flex items-center justify-center rounded-sm cursor-pointer"
+                  className="w-full bg-[#C5A059] text-white py-3.5 font-semibold hover:bg-[#a38043] transition-colors flex items-center justify-center rounded-sm cursor-pointer text-sm"
                 >
                   Book Inspection <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -385,28 +458,28 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
 
             {/* Service 3 */}
             <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group rounded-sm overflow-hidden relative transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-64 shrink-0">
+              <div className="relative h-52 shrink-0 w-full bg-slate-100">
                 <div className="w-full h-full overflow-hidden">
-                  <img src={valveImg} alt="Spear & Valve Services" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+                  <img src={valveImg} alt="Spear and CO2 Pressure Valve Servicing for Brewery Kegs" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
                 </div>
                 <AnimatedValveIcon />
               </div>
-              <div className="p-8 pt-10 flex flex-col flex-grow">
+              <div className="p-6 pt-9 flex flex-col flex-grow">
                 <h3 className="text-xl font-bold text-[#183346] mb-3 font-serif group-hover:text-[#C5A059] transition-colors duration-300">3. Spear & Valve<br/>Services</h3>
-                <p className="text-[15px] text-slate-600 mb-8 border-b border-slate-100 pb-8 flex-grow">
+                <p className="text-[14px] text-slate-600 mb-6 border-b border-slate-100 pb-6 flex-grow">
                   Advanced servicing of primary control valves and
                   spear shafts to optimize liquid flow and sealing.
                 </p>
-                <ul className="space-y-4 mb-8 text-[15px] text-slate-700 flex-grow">
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Spear overhaul & diagnostic check</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Gasket & safety O-ring replacement</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />CO2 valve calibration & servicing</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Food-safe lubricants application</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Spear extraction, safety lock checks</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Deep safety-valve dynamic test</li>
+                <ul className="space-y-3 mb-6 text-[14px] text-slate-700 flex-grow">
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Spear overhaul & diagnostic check</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Gasket & safety O-ring replacement</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />CO2 valve calibration & servicing</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Food-safe lubricants application</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Spear extraction, safety lock checks</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Deep safety-valve dynamic test</li>
                 </ul>
-                <div className="bg-slate-50 p-4 flex items-center gap-4 mb-8 mt-auto group-hover:bg-slate-100 transition-colors">
-                  <Clock className="w-6 h-6 text-slate-400 shrink-0 group-hover:text-[#C5A059] group-hover:rotate-[360deg] transition-all duration-700" />
+                <div className="bg-slate-50 p-3.5 flex items-center gap-3 mb-6 mt-auto group-hover:bg-slate-100 transition-colors">
+                  <Clock className="w-5 h-5 text-slate-400 shrink-0 group-hover:text-[#C5A059] group-hover:rotate-[360deg] transition-all duration-700" />
                   <div>
                     <div className="text-xs font-bold text-slate-900">Recommended Frequency</div>
                     <div className="text-xs text-slate-500">Annual or as needed</div>
@@ -414,7 +487,7 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
                 </div>
                 <button 
                   onClick={() => onNavigate?.('contact')}
-                  className="w-full bg-[#C5A059] text-white py-4 font-semibold hover:bg-[#a38043] transition-colors flex items-center justify-center rounded-sm cursor-pointer"
+                  className="w-full bg-[#C5A059] text-white py-3.5 font-semibold hover:bg-[#a38043] transition-colors flex items-center justify-center rounded-sm cursor-pointer text-sm"
                 >
                   Schedule Overhaul <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -423,28 +496,28 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
 
             {/* Service 4 */}
             <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group rounded-sm overflow-hidden relative transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-64 shrink-0">
+              <div className="relative h-52 shrink-0 w-full bg-slate-100">
                 <div className="w-full h-full overflow-hidden">
-                  <img src={partsImg} alt="Genuine Parts Supply" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+                  <img src={partsImg} alt="Genuine Keg Spare Parts, EPDM Gaskets, and Food-Safe O-Rings Supply" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
                 </div>
                 <AnimatedPartsIcon />
               </div>
-              <div className="p-8 pt-10 flex flex-col flex-grow">
+              <div className="p-6 pt-9 flex flex-col flex-grow">
                 <h3 className="text-xl font-bold text-[#183346] mb-3 font-serif group-hover:text-[#C5A059] transition-colors duration-300">4. Genuine Parts<br/>Supply</h3>
-                <p className="text-[15px] text-slate-600 mb-8 border-b border-slate-100 pb-8 flex-grow">
+                <p className="text-[14px] text-slate-600 mb-6 border-b border-slate-100 pb-6 flex-grow">
                   High-quality, genuine components for optimal
                   performance and long-term reliability.
                 </p>
-                <ul className="space-y-4 mb-8 text-[15px] text-slate-700 flex-grow">
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Premium spears</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />High-grade neck gaskets</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />EPDM food-safe O-rings</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Heavy-duty CO2 valves</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Sealing accessories & clamps</li>
-                  <li className="flex items-start"><Check className="w-5 h-5 text-slate-900 mr-3 shrink-0 group-hover:text-[#C5A059] transition-colors" />Dedicated springs & snap rings</li>
+                <ul className="space-y-3 mb-6 text-[14px] text-slate-700 flex-grow">
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Premium spears</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />High-grade neck gaskets</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />EPDM food-safe O-rings</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Heavy-duty CO2 valves</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Sealing accessories & clamps</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Dedicated springs & snap rings</li>
                 </ul>
-                <div className="bg-slate-50 p-4 flex items-center gap-4 mb-8 mt-auto group-hover:bg-slate-100 transition-colors">
-                  <LayoutGrid className="w-6 h-6 text-slate-400 shrink-0 group-hover:text-[#C5A059] group-hover:scale-110 transition-transform" />
+                <div className="bg-slate-50 p-3.5 flex items-center gap-3 mb-6 mt-auto group-hover:bg-slate-100 transition-colors">
+                  <LayoutGrid className="w-5 h-5 text-slate-400 shrink-0 group-hover:text-[#C5A059] group-hover:scale-110 transition-transform" />
                   <div>
                     <div className="text-xs font-bold text-slate-900">Pricing</div>
                     <div className="text-xs text-slate-500">Unit-based or contract supply</div>
@@ -452,9 +525,129 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
                 </div>
                 <button 
                   onClick={() => onNavigate?.('contact')}
-                  className="w-full bg-[#C5A059] text-white py-4 font-semibold hover:bg-[#a38043] transition-colors flex items-center justify-center rounded-sm cursor-pointer"
+                  className="w-full bg-[#C5A059] text-white py-3.5 font-semibold hover:bg-[#a38043] transition-colors flex items-center justify-center rounded-sm cursor-pointer text-sm"
                 >
                   Request Parts <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Service 5: Stainless Steel Keg Supply */}
+            <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group rounded-sm overflow-hidden relative transition-all duration-300 hover:-translate-y-2">
+              <div className="relative h-52 shrink-0 w-full bg-slate-100">
+                <div className="w-full h-full overflow-hidden">
+                  <img src={stainlessKegImg} alt="High-Grade AISI 304 Stainless Steel Keg Supply in 20L, 30L, and 50L Sizes" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
+                </div>
+                <div className="absolute -bottom-6 left-6 w-12 h-12 bg-[#111827] group-hover:bg-[#C5A059] transition-colors duration-300 rounded-full flex items-center justify-center border-4 border-white z-20 shadow-lg">
+                  <div className="absolute inset-0 bg-[#C5A059]/20 rounded-full scale-0 group-hover:scale-125 transition-transform duration-500 blur-[2px]" />
+                  <Disc className="w-5 h-5 text-white relative z-10 group-hover:rotate-90 transition-transform duration-500" />
+                </div>
+              </div>
+              <div className="p-6 pt-9 flex flex-col flex-grow">
+                <h3 className="text-xl font-bold text-[#183346] mb-3 font-serif group-hover:text-[#C5A059] transition-colors duration-300">5. Stainless Steel Keg<br/>Supply</h3>
+                <p className="text-[14px] text-slate-600 mb-6 border-b border-slate-100 pb-6 flex-grow">
+                  High-grade AISI 304 food-grade stainless steel kegs in standard DIN, FINN, and EURO sizes (20L, 30L, 50L) with customizable embossing and neck color branding.
+                </p>
+                <ul className="space-y-3 mb-6 text-[14px] text-slate-700 flex-grow">
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />AISI 304 food-grade stainless steel</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Standard DIN, FINN & EURO formats</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Available in 20L, 30L & 50L capacities</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Custom logo embossing & serialized chimes</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Color-coded neck banding for brand ID</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Burst disc safety compliance</li>
+                </ul>
+                <div className="bg-slate-50 p-3.5 flex items-center gap-3 mb-6 mt-auto group-hover:bg-slate-100 transition-colors">
+                  <LayoutGrid className="w-5 h-5 text-slate-400 shrink-0 group-hover:text-[#C5A059] group-hover:scale-110 transition-transform" />
+                  <div>
+                    <div className="text-xs font-bold text-slate-900">Supply Options</div>
+                    <div className="text-xs text-slate-500">Fleet orders & custom branding</div>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => onNavigate?.('contact')}
+                  className="w-full bg-[#C5A059] text-white py-3.5 font-semibold hover:bg-[#a38043] transition-colors flex items-center justify-center rounded-sm cursor-pointer text-sm"
+                >
+                  Order Kegs <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Service 6: Maintenance & Service Kits */}
+            <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group rounded-sm overflow-hidden relative transition-all duration-300 hover:-translate-y-2">
+              <div className="relative h-52 shrink-0 w-full bg-slate-100">
+                <div className="w-full h-full overflow-hidden">
+                  <img src={kegToolsImg} alt="Brewery Keg Maintenance Tools, Torque Keys, and Spear Extraction Kits" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
+                </div>
+                <div className="absolute -bottom-6 left-6 w-12 h-12 bg-[#111827] group-hover:bg-[#C5A059] transition-colors duration-300 rounded-full flex items-center justify-center border-4 border-white z-20 shadow-lg">
+                  <div className="absolute inset-0 bg-[#C5A059]/20 rounded-full scale-0 group-hover:scale-125 transition-transform duration-500 blur-[2px]" />
+                  <PenTool className="w-5 h-5 text-white relative z-10 group-hover:rotate-45 transition-transform duration-500" />
+                </div>
+              </div>
+              <div className="p-6 pt-9 flex flex-col flex-grow">
+                <h3 className="text-xl font-bold text-[#183346] mb-3 font-serif group-hover:text-[#C5A059] transition-colors duration-300">6. Maintenance &<br/>Service Kits</h3>
+                <p className="text-[14px] text-slate-600 mb-6 border-b border-slate-100 pb-6 flex-grow">
+                  Complete valve extraction tools, seal replacement kits, torque keys, and specialized maintenance kits to support on-site brewery technicians.
+                </p>
+                <ul className="space-y-3 mb-6 text-[14px] text-slate-700 flex-grow">
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Complete valve & spear extraction tools</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Universal seal replacement toolkits</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Calibrated spear torque keys & wrenches</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Safety latch release and disassembly jigs</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />On-site technician starter & field kits</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Portable pressure testing manifold kits</li>
+                </ul>
+                <div className="bg-slate-50 p-3.5 flex items-center gap-3 mb-6 mt-auto group-hover:bg-slate-100 transition-colors">
+                  <Clock className="w-5 h-5 text-slate-400 shrink-0 group-hover:text-[#C5A059] group-hover:rotate-[360deg] transition-all duration-700" />
+                  <div>
+                    <div className="text-xs font-bold text-slate-900">Availability</div>
+                    <div className="text-xs text-slate-500">In stock with technical guides</div>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => onNavigate?.('contact')}
+                  className="w-full bg-[#C5A059] text-white py-3.5 font-semibold hover:bg-[#a38043] transition-colors flex items-center justify-center rounded-sm cursor-pointer text-sm"
+                >
+                  Order Service Kits <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Service 7: Dispensing Taps */}
+            <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group rounded-sm overflow-hidden relative transition-all duration-300 hover:-translate-y-2">
+              <div className="relative h-52 shrink-0 w-full bg-slate-100">
+                <div className="w-full h-full overflow-hidden">
+                  <img src={dispensingTapImg} alt="Durable High-Performance Draught Beer Dispensing Taps for Breweries" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
+                </div>
+                <div className="absolute -bottom-6 left-6 w-12 h-12 bg-[#111827] group-hover:bg-[#C5A059] transition-colors duration-300 rounded-full flex items-center justify-center border-4 border-white z-20 shadow-lg">
+                  <div className="absolute inset-0 bg-[#C5A059]/20 rounded-full scale-0 group-hover:scale-125 transition-transform duration-500 blur-[2px]" />
+                  <Beer className="w-5 h-5 text-white relative z-10 group-hover:animate-bounce transition-transform duration-500" />
+                </div>
+              </div>
+              <div className="p-6 pt-9 flex flex-col flex-grow">
+                <h3 className="text-xl font-bold text-[#183346] mb-3 font-serif group-hover:text-[#C5A059] transition-colors duration-300">7. Dispensing<br/>Taps</h3>
+                <p className="text-[14px] text-slate-600 mb-6 border-b border-slate-100 pb-6 flex-grow">
+                  Supply of durable, high-performance dispensing taps for brewery and beverage dispensing applications.
+                </p>
+                <ul className="space-y-3 mb-6 text-[14px] text-slate-700 flex-grow">
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />High-performance stainless draft taps</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Forward-sealing flow control faucets</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Heavy-duty brewery & event picnic taps</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Coupler connections (A-Type, S-Type, D-Type)</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Food-safe beverage line and quick connectors</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Draught hygiene & line-flush accessories</li>
+                </ul>
+                <div className="bg-slate-50 p-3.5 flex items-center gap-3 mb-6 mt-auto group-hover:bg-slate-100 transition-colors">
+                  <LayoutGrid className="w-5 h-5 text-slate-400 shrink-0 group-hover:text-[#C5A059] group-hover:scale-110 transition-transform" />
+                  <div>
+                    <div className="text-xs font-bold text-slate-900">Application</div>
+                    <div className="text-xs text-slate-500">Breweries, taprooms & venues</div>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => onNavigate?.('contact')}
+                  className="w-full bg-[#C5A059] text-white py-3.5 font-semibold hover:bg-[#a38043] transition-colors flex items-center justify-center rounded-sm cursor-pointer text-sm"
+                >
+                  Request Dispensing Taps <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
             </motion.div>
@@ -538,90 +731,233 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
         </div>
       </section>
 
-      {/* Our Service Process */}
-      <section className="py-24 bg-[#0B1423] overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* Procedures of our Keg Service */}
+      <section className="py-24 bg-[#0B1423] text-white overflow-hidden relative">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-transparent pointer-events-none" />
+        
+        <div className="max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6 }}
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl font-serif text-white mb-4 font-bold">Our Service Process</h2>
-            <div className="w-12 h-1 bg-[#D4AF37] mx-auto mb-20 transition-all duration-300 hover:w-24"></div>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C5A059]/10 border border-[#C5A059]/30 text-[#C5A059] text-xs font-semibold uppercase tracking-wider mb-4">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              Standard Operating Procedures (SOP)
+            </div>
+            <h2 className="text-3xl md:text-5xl font-serif text-white mb-4 font-bold">Procedures of Our Keg Service</h2>
+            <p className="text-slate-400 max-w-3xl mx-auto text-base">
+              A rigorous, technical multi-stage protocol engineered to safeguard beer freshness, restore structural integrity, and ensure 100% pressure-tight safety compliance.
+            </p>
+            <div className="w-16 h-1 bg-[#D4AF37] mx-auto mt-6 transition-all duration-300 hover:w-28"></div>
           </motion.div>
 
-          <div className="relative">
-            {/* Connecting line */}
-            <div className="hidden md:block absolute top-12 left-0 w-full h-[1px] border-t border-dashed border-slate-700 z-0"></div>
-            
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={staggerContainer}
-              className="grid grid-cols-1 md:grid-cols-5 gap-12 relative z-10"
-            >
-              {/* Step 1 */}
-              <motion.div variants={fadeInUp} className="flex flex-col items-center group">
-                <div className="relative w-24 h-24 bg-[#0B1423] border border-slate-800 rounded-2xl flex items-center justify-center mb-6 z-10 group-hover:border-[#D4AF37] group-hover:shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all duration-500">
-                  <div className="absolute -top-3 -right-3 w-6 h-6 bg-[#D4AF37] text-[#0B1423] rounded-full flex items-center justify-center font-bold text-xs group-hover:scale-110 transition-transform">1</div>
-                  <ClipboardList className="w-8 h-8 text-[#D4AF37] group-hover:scale-110 transition-transform" strokeWidth={1.5} />
+          {/* 10 Procedures Grid */}
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={staggerContainer}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-16"
+          >
+            {/* Step 1 */}
+            <motion.div variants={fadeInUp} className="bg-slate-900/80 border border-slate-800 hover:border-[#D4AF37]/60 p-5 rounded-lg flex flex-col group transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#D4AF37]/5">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-black tracking-widest text-[#D4AF37] bg-[#D4AF37]/10 px-2.5 py-1 rounded">STEP 01</span>
+                <div className="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center text-[#D4AF37] group-hover:scale-110 transition-transform">
+                  <FileText className="w-5 h-5" />
                 </div>
-                <h3 className="text-white font-bold mb-3 text-[15px] group-hover:text-[#D4AF37] transition-colors">Collection & Intake</h3>
-                <p className="text-[13px] text-slate-400 leading-relaxed max-w-[200px] group-hover:text-slate-300 transition-colors">
-                  Kegs are collected and logged into our service system.
-                </p>
-              </motion.div>
-
-              {/* Step 2 */}
-              <motion.div variants={fadeInUp} className="flex flex-col items-center group">
-                <div className="relative w-24 h-24 bg-[#0B1423] border border-slate-800 rounded-2xl flex items-center justify-center mb-6 z-10 group-hover:border-[#D4AF37] group-hover:shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all duration-500">
-                  <div className="absolute -top-3 -right-3 w-6 h-6 bg-[#D4AF37] text-[#0B1423] rounded-full flex items-center justify-center font-bold text-xs group-hover:scale-110 transition-transform">2</div>
-                  <Search className="w-8 h-8 text-[#D4AF37] group-hover:scale-110 transition-transform" strokeWidth={1.5} />
-                </div>
-                <h3 className="text-white font-bold mb-3 text-[15px] group-hover:text-[#D4AF37] transition-colors">Inspection</h3>
-                <p className="text-[13px] text-slate-400 leading-relaxed max-w-[200px] group-hover:text-slate-300 transition-colors">
-                  We inspect each keg for structural, hygiene, and pressure integrity.
-                </p>
-              </motion.div>
-
-              {/* Step 3 */}
-              <motion.div variants={fadeInUp} className="flex flex-col items-center group">
-                <div className="relative w-24 h-24 bg-[#0B1423] border border-slate-800 rounded-2xl flex items-center justify-center mb-6 z-10 group-hover:border-[#D4AF37] group-hover:shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all duration-500">
-                  <div className="absolute -top-3 -right-3 w-6 h-6 bg-[#D4AF37] text-[#0B1423] rounded-full flex items-center justify-center font-bold text-xs group-hover:scale-110 transition-transform">3</div>
-                  <Zap className="w-8 h-8 text-[#D4AF37] group-hover:scale-110 group-hover:rotate-12 transition-transform" strokeWidth={1.5} />
-                </div>
-                <h3 className="text-white font-bold mb-3 text-[15px] group-hover:text-[#D4AF37] transition-colors">Service Execution</h3>
-                <p className="text-[13px] text-slate-400 leading-relaxed max-w-[200px] group-hover:text-slate-300 transition-colors">
-                  Cleaning, repair, part replacement, and testing are performed.
-                </p>
-              </motion.div>
-
-              {/* Step 4 */}
-              <motion.div variants={fadeInUp} className="flex flex-col items-center group">
-                <div className="relative w-24 h-24 bg-[#0B1423] border border-slate-800 rounded-2xl flex items-center justify-center mb-6 z-10 group-hover:border-[#D4AF37] group-hover:shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all duration-500">
-                  <div className="absolute -top-3 -right-3 w-6 h-6 bg-[#D4AF37] text-[#0B1423] rounded-full flex items-center justify-center font-bold text-xs group-hover:scale-110 transition-transform">4</div>
-                  <CheckCircle className="w-8 h-8 text-[#D4AF37] group-hover:scale-110 transition-transform" strokeWidth={1.5} />
-                </div>
-                <h3 className="text-white font-bold mb-3 text-[15px] group-hover:text-[#D4AF37] transition-colors">Quality Check</h3>
-                <p className="text-[13px] text-slate-400 leading-relaxed max-w-[200px] group-hover:text-slate-300 transition-colors">
-                  Every keg is pressure tested and verified before release.
-                </p>
-              </motion.div>
-
-              {/* Step 5 */}
-              <motion.div variants={fadeInUp} className="flex flex-col items-center group">
-                <div className="relative w-24 h-24 bg-[#0B1423] border border-slate-800 rounded-2xl flex items-center justify-center mb-6 z-10 group-hover:border-[#D4AF37] group-hover:shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all duration-500">
-                  <div className="absolute -top-3 -right-3 w-6 h-6 bg-[#D4AF37] text-[#0B1423] rounded-full flex items-center justify-center font-bold text-xs group-hover:scale-110 transition-transform">5</div>
-                  <ArrowRightLeft className="w-8 h-8 text-[#D4AF37] group-hover:scale-110 hover:-rotate-12 transition-transform" strokeWidth={1.5} />
-                </div>
-                <h3 className="text-white font-bold mb-3 text-[15px] group-hover:text-[#D4AF37] transition-colors">Return & Circulation</h3>
-                <p className="text-[13px] text-slate-400 leading-relaxed max-w-[200px] group-hover:text-slate-300 transition-colors">
-                  Kegs are returned ready for optimal performance.
-                </p>
-              </motion.div>
+              </div>
+              <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors">Documentation & Data Capture</h3>
+              <p className="text-xs text-slate-400 leading-relaxed flex-grow">
+                Incoming/Outgoing documentation checks and data capture, as required. Comprehensive serial number logging and tare weight recording.
+              </p>
             </motion.div>
+
+            {/* Step 2 */}
+            <motion.div variants={fadeInUp} className="bg-slate-900/80 border border-slate-800 hover:border-[#D4AF37]/60 p-5 rounded-lg flex flex-col group transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#D4AF37]/5">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-black tracking-widest text-[#D4AF37] bg-[#D4AF37]/10 px-2.5 py-1 rounded">STEP 02</span>
+                <div className="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center text-[#D4AF37] group-hover:scale-110 transition-transform">
+                  <Scan className="w-5 h-5" />
+                </div>
+              </div>
+              <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors">Visual Inspection & Segmentation</h3>
+              <p className="text-xs text-slate-400 leading-relaxed flex-grow">
+                Visual inspection and assessment, segmentation per keg size (20L, 30L, 50L), chime format (DIN, FINN, EURO), and manufacturer.
+              </p>
+            </motion.div>
+
+            {/* Step 3 */}
+            <motion.div variants={fadeInUp} className="bg-slate-900/80 border border-slate-800 hover:border-[#D4AF37]/60 p-5 rounded-lg flex flex-col group transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#D4AF37]/5">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-black tracking-widest text-[#D4AF37] bg-[#D4AF37]/10 px-2.5 py-1 rounded">STEP 03</span>
+                <div className="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center text-[#D4AF37] group-hover:scale-110 transition-transform">
+                  <Droplets className="w-5 h-5" />
+                </div>
+              </div>
+              <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors">Internal & External Inspections</h3>
+              <p className="text-xs text-slate-400 leading-relaxed flex-grow">
+                Internal and external inspections, removal of labels, beer stone (calcium oxalate) detection, and tannings check.
+              </p>
+            </motion.div>
+
+            {/* Step 4 */}
+            <motion.div variants={fadeInUp} className="bg-slate-900/80 border border-slate-800 hover:border-[#D4AF37]/60 p-5 rounded-lg flex flex-col group transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#D4AF37]/5">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-black tracking-widest text-[#D4AF37] bg-[#D4AF37]/10 px-2.5 py-1 rounded">STEP 04</span>
+                <div className="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center text-[#D4AF37] group-hover:scale-110 transition-transform">
+                  <Gauge className="w-5 h-5" />
+                </div>
+              </div>
+              <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors">Pressure & Spear Control Test</h3>
+              <p className="text-xs text-slate-400 leading-relaxed flex-grow">
+                Keg pressure test (including spear control) and visual damage check to guarantee hermetic seal and zero gas bypass.
+              </p>
+            </motion.div>
+
+            {/* Step 5 */}
+            <motion.div variants={fadeInUp} className="bg-slate-900/80 border border-slate-800 hover:border-[#D4AF37]/60 p-5 rounded-lg flex flex-col group transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#D4AF37]/5">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-black tracking-widest text-[#D4AF37] bg-[#D4AF37]/10 px-2.5 py-1 rounded">STEP 05</span>
+                <div className="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center text-[#D4AF37] group-hover:scale-110 transition-transform">
+                  <Boxes className="w-5 h-5" />
+                </div>
+              </div>
+              <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors">Keg Decant & Fault Analysis</h3>
+              <p className="text-xs text-slate-400 leading-relaxed flex-grow">
+                Keg decant, handling and sorting of partially full and full kegs, inspection, sorting foreign kegs and recording fault analysis data.
+              </p>
+            </motion.div>
+
+            {/* Step 6 */}
+            <motion.div variants={fadeInUp} className="bg-slate-900/80 border border-slate-800 hover:border-[#D4AF37]/60 p-5 rounded-lg flex flex-col group transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#D4AF37]/5">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-black tracking-widest text-[#D4AF37] bg-[#D4AF37]/10 px-2.5 py-1 rounded">STEP 06</span>
+                <div className="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center text-[#D4AF37] group-hover:scale-110 transition-transform">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+              </div>
+              <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors">Spear Maintenance & Refurbishment</h3>
+              <p className="text-xs text-slate-400 leading-relaxed flex-grow">
+                Spear parts maintenance and/or refurbishment: dismounting and disassembling for ultrasonic cleaning, reassembling with new parts, specification checks, and data logging.
+              </p>
+            </motion.div>
+
+            {/* Step 7 */}
+            <motion.div variants={fadeInUp} className="bg-slate-900/80 border border-slate-800 hover:border-[#D4AF37]/60 p-5 rounded-lg flex flex-col group transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#D4AF37]/5">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-black tracking-widest text-[#D4AF37] bg-[#D4AF37]/10 px-2.5 py-1 rounded">STEP 07</span>
+                <div className="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center text-[#D4AF37] group-hover:scale-110 transition-transform">
+                  <Maximize2 className="w-5 h-5" />
+                </div>
+              </div>
+              <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors">Neck Alignment & Straightening</h3>
+              <p className="text-xs text-slate-400 leading-relaxed flex-grow">
+                Keg neck alignment check and straightening to ensure tight coupler clamping and eliminate draught dispensing leaks.
+              </p>
+            </motion.div>
+
+            {/* Step 8 */}
+            <motion.div variants={fadeInUp} className="bg-slate-900/80 border border-slate-800 hover:border-[#D4AF37]/60 p-5 rounded-lg flex flex-col group transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#D4AF37]/5">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-black tracking-widest text-[#D4AF37] bg-[#D4AF37]/10 px-2.5 py-1 rounded">STEP 08</span>
+                <div className="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center text-[#D4AF37] group-hover:scale-110 transition-transform">
+                  <Hammer className="w-5 h-5" />
+                </div>
+              </div>
+              <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors">Bottom Dent Measurement & Correction</h3>
+              <p className="text-xs text-slate-400 leading-relaxed flex-grow">
+                Keg bottom dent measurement and calibration-assisted correction to restore accurate volume capacity and floor balance.
+              </p>
+            </motion.div>
+
+            {/* Step 9 */}
+            <motion.div variants={fadeInUp} className="bg-slate-900/80 border border-slate-800 hover:border-[#D4AF37]/60 p-5 rounded-lg flex flex-col group transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#D4AF37]/5">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-black tracking-widest text-[#D4AF37] bg-[#D4AF37]/10 px-2.5 py-1 rounded">STEP 09</span>
+                <div className="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center text-[#D4AF37] group-hover:scale-110 transition-transform">
+                  <Wrench className="w-5 h-5" />
+                </div>
+              </div>
+              <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors">Top & Bottom Chimes Straightening</h3>
+              <p className="text-xs text-slate-400 leading-relaxed flex-grow">
+                Top and bottom chimes straightening and re-rolling to restore stable stacking geometry, safety handling rings, and impact resistance.
+              </p>
+            </motion.div>
+
+            {/* Step 10 */}
+            <motion.div variants={fadeInUp} className="bg-slate-900/80 border border-slate-800 hover:border-[#D4AF37]/60 p-5 rounded-lg flex flex-col group transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#D4AF37]/5">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-black tracking-widest text-[#D4AF37] bg-[#D4AF37]/10 px-2.5 py-1 rounded">STEP 10</span>
+                <div className="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center text-[#D4AF37] group-hover:scale-110 transition-transform">
+                  <Flame className="w-5 h-5" />
+                </div>
+              </div>
+              <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors">Welding Cracks and Splits</h3>
+              <p className="text-xs text-slate-400 leading-relaxed flex-grow">
+                Precision sanitary TIG welding of structural cracks and splits in stainless steel shells, handles, and seams.
+              </p>
+            </motion.div>
+          </motion.div>
+
+          {/* Throughout this process Hero Keg can also provide */}
+          <div className="bg-gradient-to-br from-slate-900 via-slate-900/90 to-[#183346]/40 border border-slate-800 rounded-2xl p-8 lg:p-10 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-[#C5A059]/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="mb-8">
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-[#D4AF37] uppercase tracking-wider mb-2">
+                <Sparkles className="w-4 h-4" /> Integrated Fleet Support
+              </div>
+              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">
+                Throughout This Process, Hero Keg Also Provides:
+              </h3>
+              <p className="text-sm text-slate-400 mt-2 max-w-2xl">
+                Comprehensive secondary services designed to support brewery logistics and maximize keg lifespan:
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+              <div className="bg-slate-800/60 border border-slate-700/60 p-6 rounded-xl hover:border-[#D4AF37]/50 transition-all duration-300 group">
+                <div className="w-12 h-12 rounded-lg bg-[#D4AF37]/10 text-[#D4AF37] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Recycle className="w-6 h-6" />
+                </div>
+                <div className="text-xs font-bold text-[#D4AF37] uppercase tracking-widest mb-1">Service 01</div>
+                <h4 className="text-lg font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors">
+                  Collection of Scrap / Old Parts
+                </h4>
+                <p className="text-sm text-slate-300 leading-relaxed">
+                  Collection of scrap and decommissioned parts for environmentally-friendly, compliant removal and sustainable recycling.
+                </p>
+              </div>
+
+              <div className="bg-slate-800/60 border border-slate-700/60 p-6 rounded-xl hover:border-[#D4AF37]/50 transition-all duration-300 group">
+                <div className="w-12 h-12 rounded-lg bg-[#D4AF37]/10 text-[#D4AF37] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <BarChart3 className="w-6 h-6" />
+                </div>
+                <div className="text-xs font-bold text-[#D4AF37] uppercase tracking-widest mb-1">Service 02</div>
+                <h4 className="text-lg font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors">
+                  Documentation & Data Analysis
+                </h4>
+                <p className="text-sm text-slate-300 leading-relaxed">
+                  Documentation and comprehensive data analysis providing in-depth insight into the operating condition and state of your keg fleet.
+                </p>
+              </div>
+
+              <div className="bg-slate-800/60 border border-slate-700/60 p-6 rounded-xl hover:border-[#D4AF37]/50 transition-all duration-300 group">
+                <div className="w-12 h-12 rounded-lg bg-[#D4AF37]/10 text-[#D4AF37] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Package className="w-6 h-6" />
+                </div>
+                <div className="text-xs font-bold text-[#D4AF37] uppercase tracking-widest mb-1">Service 03</div>
+                <h4 className="text-lg font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors">
+                  Management of Stock & Spare Parts
+                </h4>
+                <p className="text-sm text-slate-300 leading-relaxed">
+                  Structured management of stock and spare parts to ensure continuous component availability and eliminate maintenance bottlenecks.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
