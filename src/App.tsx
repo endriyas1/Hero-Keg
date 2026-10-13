@@ -272,11 +272,6 @@ export default function App() {
             <p className="text-xs text-slate-500">
               © 2026 Hero Keg Service and Trading PLC. All Rights Reserved.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400">
-              <a href="/robots.txt" target="_blank" rel="noopener noreferrer" className="hover:text-[#C5A059] transition-colors">
-                Robots.txt
-              </a>
-            </div>
           </div>
         </div>
       </footer>
