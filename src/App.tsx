@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy, useCallback } from 'react';
-import { Facebook, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
+import { Facebook, Linkedin, Mail, MapPin, Menu, Phone, X } from 'lucide-react';
 
 const loadHome = () => import('./pages/Home');
 const loadAbout = () => import('./pages/AboutUs');
@@ -42,9 +42,11 @@ function getPageFromUrl(): Page {
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>(() => getPageFromUrl());
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handlePopState = () => {
+      setIsMenuOpen(false);
       setCurrentPage(getPageFromUrl());
     };
     window.addEventListener('popstate', handlePopState);
@@ -52,6 +54,7 @@ export default function App() {
   }, []);
 
   const handleNavigate = useCallback((page: Page) => {
+    setIsMenuOpen(false);
     setCurrentPage(page);
     const targetPath = page === 'home' ? '/' : `/${page}`;
     if (window.location.pathname !== targetPath) {
@@ -61,6 +64,7 @@ export default function App() {
   }, []);
 
   const scrollToWhyChooseUs = useCallback(() => {
+    setIsMenuOpen(false);
     setCurrentPage('why-choose-us');
     if (window.location.pathname !== '/why-choose-us') {
       window.history.pushState({}, '', '/why-choose-us');
@@ -163,8 +167,66 @@ export default function App() {
                 Request a Quote
               </a>
             </div>
+
+            {/* Mobile menu toggle */}
+            <button
+              type="button"
+              onClick={() => setIsMenuOpen(open => !open)}
+              className="md:hidden inline-flex items-center justify-center w-11 h-11 -mr-2 rounded-sm text-slate-900 hover:bg-slate-100 transition-colors"
+              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile menu */}
+        {isMenuOpen && (
+          <div id="mobile-menu" className="md:hidden border-t border-gray-100 bg-white shadow-lg">
+            <div className="px-4 py-3 space-y-1">
+              {([
+                ['home', '/', 'Home'],
+                ['about', '/about', 'About Us'],
+                ['services', '/services', 'Services'],
+                ['why-choose-us', '/why-choose-us', 'Why Choose Us'],
+                ['contact', '/contact', 'Contact Us'],
+              ] as const).map(([page, href, label]) => (
+                <a
+                  key={page}
+                  href={href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (page === 'why-choose-us') scrollToWhyChooseUs();
+                    else handleNavigate(page);
+                  }}
+                  aria-current={currentPage === page ? 'page' : undefined}
+                  className={`block px-3 py-3 rounded-sm text-base font-medium transition-colors ${
+                    currentPage === page
+                      ? 'bg-slate-100 text-slate-900'
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  }`}
+                >
+                  {label}
+                </a>
+              ))}
+              <a
+                href="/contact"
+                onClick={(e) => { e.preventDefault(); handleNavigate('contact'); }}
+                className="block mt-3 text-center bg-[#C5A059] text-white text-sm font-semibold px-6 py-3 rounded-sm hover:bg-[#a38043] transition-colors uppercase tracking-wide"
+              >
+                Request a Quote
+              </a>
+              <a
+                href="tel:+251943739086"
+                className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-slate-900 border border-slate-200 rounded-sm hover:bg-slate-50 transition-colors"
+              >
+                <Phone className="w-4 h-4 text-[#C5A059]" /> Call +251 943 739 086
+              </a>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Main Content */}
