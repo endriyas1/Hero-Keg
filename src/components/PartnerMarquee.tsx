@@ -40,7 +40,7 @@ export function PartnerMarquee() {
             <path 
               d="M 44 8
                  C 48.5 8, 51 11, 51 16
-                 L 51 68
+                 L 49 68
                  C 51 76, 57 82, 65 84
                  C 75 86.5, 89 87, 89 87
                  C 89 87, 90 81, 88 68
@@ -67,35 +67,7 @@ export function PartnerMarquee() {
       )
     },
     {
-      name: "Habesha Breweries",
-      logo: (
-        <div className="flex items-center gap-2.5 select-none">
-          <svg className="w-7 h-7 text-[#D4AF37]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            {/* Geometric African-inspired diamond nested art */}
-            <polygon points="12,2 22,12 12,22 2,12" />
-            <polygon points="12,6 18,12 12,18 6,12" fill="currentColor" fillOpacity="0.15" />
-            <circle cx="12" cy="12" r="2" fill="currentColor" />
-          </svg>
-          <span className="font-sans font-extrabold tracking-widest text-[#183346] uppercase text-xs md:text-sm">HABESHA</span>
-        </div>
-      )
-    },
-    {
-      name: "St. George Beer (BGI)",
-      logo: (
-        <div className="flex items-center gap-2 select-none">
-          <svg className="w-6 h-6 text-[#A82B2B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            {/* Saint George Cross within Shield */}
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-            <line x1="12" y1="5" x2="12" y2="17" stroke="currentColor" />
-            <line x1="6" y1="11" x2="18" y2="11" stroke="currentColor" />
-          </svg>
-          <span className="font-serif font-black italic tracking-tight text-slate-900 text-sm md:text-base">ST. GEORGE</span>
-        </div>
-      )
-    },
-    {
-      name: "Heineken Ethiopia",
+      name: "Heineken",
       logo: (
         <div className="flex items-center gap-1.5 select-none">
           <svg className="w-5 h-5 text-[#00B140]" viewBox="0 0 24 24" fill="currentColor">
@@ -106,64 +78,11 @@ export function PartnerMarquee() {
           <span className="text-[9px] font-bold text-[#E02424] align-super">®</span>
         </div>
       )
-    },
-    {
-      name: "Harar Brewery",
-      logo: (
-        <div className="flex items-center gap-2 select-none">
-          <svg className="w-6 h-6 text-[#C5A059]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            {/* Traditional Harar gate archway hybrid */}
-            <path d="M4 21V10a8 8 0 0 1 16 0v11" />
-            <path d="M8 21v-5a4 4 0 0 1 8 0v5" fill="currentColor" fillOpacity="0.2" />
-            <line x1="2" y1="21" x2="22" y2="21" />
-          </svg>
-          <span className="font-serif font-bold tracking-widest text-[#183346] text-xs md:text-sm">HARAR BREWERY</span>
-        </div>
-      )
-    },
-    {
-      name: "Bedele Brewery",
-      logo: (
-        <div className="flex items-center gap-2 select-none">
-          <svg className="w-6 h-6 text-[#15803D]" viewBox="0 0 24 24" fill="currentColor">
-            {/* Hop leaf vector representation */}
-            <path d="M12 2C7.5 2 4 6.5 4 11c0 4.5 3.5 7.5 8 11 4.5-3.5 8-6.5 8-11 0-4.5-3.5-9-8-9zM9 11c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1zm6 0c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" />
-          </svg>
-          <span className="font-sans font-extrabold tracking-wide text-[#111827] text-sm md:text-base">BEDELE</span>
-        </div>
-      )
-    },
-    {
-      name: "Raya Beer",
-      logo: (
-        <div className="flex items-center gap-2 select-none">
-          <svg className="w-6 h-6 text-[#183346]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            {/* Mountain peak representation */}
-            <path d="M3 20h18L12 4z" />
-            <path d="M8.5 11l3.5-4 3.5 4" strokeWidth="1.5" />
-          </svg>
-          <span className="font-serif font-black tracking-normal text-[#C5A059] uppercase text-sm md:text-base">RAYA BEER</span>
-        </div>
-      )
-    },
-    {
-      name: "Walia Beer",
-      logo: (
-        <div className="flex items-center gap-2 select-none">
-          <svg className="w-6 h-6 text-[#B45309]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            {/* Dynamic Horn vector curve */}
-            <path d="M4 12c4-8 12-8 16-1" />
-            <path d="M6 15c3-6 9-6 12-1" />
-            <circle cx="12" cy="18" r="2" fill="currentColor" />
-          </svg>
-          <span className="font-sans font-black tracking-wider text-[#183346] uppercase text-xs md:text-sm">WALIA</span>
-        </div>
-      )
     }
   ];
 
-  // We duplicate the array to permit completely smooth, un-disrupted looping
-  const duplicatedPartners = [...partners, ...partners, ...partners];
+  // We repeat the array so the continuous marquee stays smooth and endless
+  const duplicatedPartners = Array(8).fill(partners).flat();
 
   return (
     <section className="py-8 bg-slate-50 border-b border-slate-100 overflow-hidden relative select-none">
@@ -179,10 +98,10 @@ export function PartnerMarquee() {
       <div className="w-full relative flex items-center">
         <motion.div
           className="flex gap-16 md:gap-24 items-center whitespace-nowrap"
-          animate={{ x: ["0%", "-33.333%"] }}
+          animate={{ x: ["0%", "-50%"] }}
           transition={{
             ease: "linear",
-            duration: 25,
+            duration: 20,
             repeat: Infinity
           }}
           style={{ width: "fit-content" }}

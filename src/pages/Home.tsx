@@ -28,8 +28,8 @@ const BeforeAfterSlider = React.lazy(() =>
 import { PartnerMarquee } from '../components/PartnerMarquee';
 
 import heroImg from '../assets/images/home_hero_kegs_1779722365542.png';
-import sanitationImg from '../assets/images/service_sanitation_1779717414016.png';
-import repairImg from '../assets/images/service_repair_1779717434332.png';
+import sanitationImg from '../assets/images/service_sanitation_1779717414016.jpg';
+import repairImg from '../assets/images/service_repair_1779717434332.jpg';
 import valveImg from '../assets/images/service_valves_1779717454901.png';
 import partsImg from '../assets/images/service_parts_1779717475851.webp';
 import warehouseImg from '../assets/images/home_hero_kegs_1779722365542.png';
@@ -248,12 +248,12 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
             variants={staggerContainer}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 justify-items-center max-w-6xl mx-auto"
           >
             {/* Service 1 */}
-            <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
-                <img src={sanitationImg} alt="Brewery Keg Maintenance and Ultrasonic Internal Sanitation in Ethiopia" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
+            <motion.div variants={fadeInUp} className="w-full max-w-[350px] mx-auto bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
+              <div className="relative h-[250px] w-full max-w-[350px] overflow-hidden bg-slate-100">
+                <img src={sanitationImg} alt="Brewery Keg Maintenance and Ultrasonic Internal Sanitation in Ethiopia" width={350} height={250} loading="lazy" decoding="async" className="w-full h-[250px] object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
                 <div className="absolute bottom-0 left-0 bg-[#111827] text-white p-2 group-hover:bg-[#C5A059] transition-colors duration-300">
                   <Droplet className="w-5 h-5 group-hover:animate-bounce" />
                 </div>
@@ -275,18 +275,18 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
             </motion.div>
 
             {/* Service 2 */}
-            <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
-                <img src={repairImg} alt="Commercial Keg Structural Repair, Neck Straightening, and Chime Re-rolling" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
+            <motion.div variants={fadeInUp} className="w-full max-w-[350px] mx-auto bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
+              <div className="relative h-[250px] w-full max-w-[350px] overflow-hidden bg-slate-100">
+                <img src={repairImg} alt="Commercial Keg Structural Repair, Neck Straightening, and Chime Re-rolling" width={350} height={250} loading="lazy" decoding="async" className="w-full h-[250px] object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
                 <div className="absolute bottom-0 left-0 bg-[#111827] text-white p-2 group-hover:bg-[#C5A059] transition-colors duration-300">
                   <Wrench className="w-5 h-5 group-hover:rotate-45 transition-transform duration-300" />
                 </div>
               </div>
               <div className="p-6 flex flex-col flex-grow">
                 <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-[#C5A059] transition-colors duration-300">
-                  2. Keg Repair & Structural<br className="hidden sm:inline" /> Restoration
+                  Keg Repair & Service Kits
                 </h3>
-                <p className="text-sm text-slate-600 mb-6 flex-grow">Dent removal, neck straightening, chime restoration, inspection, and pressure integrity checks.</p>
+                <p className="text-sm text-slate-600 mb-6 flex-grow">Dent removal, neck & chime restoration, plus specialized spear extraction tools, torque keys, and on-site maintenance kits.</p>
                 <a 
                   href="#services" 
                   onClick={(e) => {
@@ -301,9 +301,9 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
             </motion.div>
 
             {/* Service 3 */}
-            <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
-                <img src={valveImg} alt="Spear and CO2 Pressure Valve Servicing for Brewery Kegs" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
+            <motion.div variants={fadeInUp} className="w-full max-w-[350px] mx-auto bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
+              <div className="relative h-[250px] w-full max-w-[350px] overflow-hidden bg-slate-100">
+                <img src={valveImg} alt="Spear and CO2 Pressure Valve Servicing for Brewery Kegs" width={350} height={250} loading="lazy" decoding="async" className="w-full h-[250px] object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
                 <div className="absolute bottom-0 left-0 bg-[#111827] text-white p-2 group-hover:bg-[#C5A059] transition-colors duration-300">
                   <Layers className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
                 </div>
@@ -325,9 +325,9 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
             </motion.div>
 
             {/* Service 4 */}
-            <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
-                <img src={partsImg} alt="Genuine Keg Spare Parts, EPDM Gaskets, and Food-Safe O-Rings Supply" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
+            <motion.div variants={fadeInUp} className="w-full max-w-[350px] mx-auto bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
+              <div className="relative h-[250px] w-full max-w-[350px] overflow-hidden bg-slate-100">
+                <img src={partsImg} alt="Genuine Keg Spare Parts, EPDM Gaskets, and Food-Safe O-Rings Supply" width={350} height={250} loading="lazy" decoding="async" className="w-full h-[250px] object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
                 <div className="absolute bottom-0 left-0 bg-[#111827] text-white p-2 group-hover:bg-[#C5A059] transition-colors duration-300">
                   <Package className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
                 </div>
@@ -349,9 +349,9 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
             </motion.div>
 
             {/* Service 5: Stainless Steel Keg Supply */}
-            <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
-                <img src={stainlessKegImg} alt="High-Grade AISI 304 Stainless Steel Keg Supply in 20L, 30L, and 50L Sizes" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
+            <motion.div variants={fadeInUp} className="w-full max-w-[350px] mx-auto bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
+              <div className="relative h-[250px] w-full max-w-[350px] overflow-hidden bg-slate-100">
+                <img src={stainlessKegImg} alt="High-Grade AISI 304 Stainless Steel Keg Supply in 20L, 30L, and 50L Sizes" width={350} height={250} loading="lazy" decoding="async" className="w-full h-[250px] object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
                 <div className="absolute bottom-0 left-0 bg-[#111827] text-white p-2 group-hover:bg-[#C5A059] transition-colors duration-300">
                   <Disc className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
                 </div>
@@ -372,34 +372,10 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
               </div>
             </motion.div>
 
-            {/* Service 6: Maintenance & Service Kits */}
-            <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
-                <img src={kegToolsImg} alt="Brewery Keg Maintenance Tools, Torque Keys, and Spear Extraction Kits" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
-                <div className="absolute bottom-0 left-0 bg-[#111827] text-white p-2 group-hover:bg-[#C5A059] transition-colors duration-300">
-                  <PenTool className="w-5 h-5 group-hover:rotate-45 transition-transform duration-300" />
-                </div>
-              </div>
-              <div className="p-6 flex flex-col flex-grow">
-                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-[#C5A059] transition-colors duration-300">Maintenance & Service Kits</h3>
-                <p className="text-sm text-slate-600 mb-6 flex-grow">Complete valve extraction tools, seal replacement kits, torque keys, and specialized maintenance kits to support on-site brewery technicians.</p>
-                <a 
-                  href="#services" 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onNavigate?.('services');
-                  }}
-                  className="inline-flex items-center text-sm font-semibold text-slate-900 hover:text-[#C5A059] transition-colors cursor-pointer"
-                >
-                  Learn More <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
-                </a>
-              </div>
-            </motion.div>
-
-            {/* Service 7: Dispensing Taps */}
-            <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
-                <img src={dispensingTapImg} alt="Durable High-Performance Draught Beer Dispensing Taps for Breweries" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
+            {/* Service 6: Dispensing Taps */}
+            <motion.div variants={fadeInUp} className="w-full max-w-[350px] mx-auto bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group transition-all duration-300 hover:-translate-y-2">
+              <div className="relative h-[250px] w-full max-w-[350px] overflow-hidden bg-slate-100">
+                <img src={dispensingTapImg} alt="Durable High-Performance Draught Beer Dispensing Taps for Breweries" width={350} height={250} loading="lazy" decoding="async" className="w-full h-[250px] object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
                 <div className="absolute bottom-0 left-0 bg-[#111827] text-white p-2 group-hover:bg-[#C5A059] transition-colors duration-300">
                   <Beer className="w-5 h-5 group-hover:animate-bounce transition-transform duration-300" />
                 </div>

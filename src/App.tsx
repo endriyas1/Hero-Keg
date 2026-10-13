@@ -240,10 +240,11 @@ export default function App() {
               <h4 className="text-xs font-bold text-white tracking-widest uppercase mb-6">Our Services</h4>
               <ul className="space-y-3">
                 <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left block">Keg Maintenance & Sanitation</a></li>
-                <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left block">Keg Repair & Structural Restoration</a></li>
+                <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left block">Keg Repair & Service Kits</a></li>
                 <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left block">Spear & Valve Services</a></li>
-                <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left block">Pressure & Leak Testing</a></li>
-                <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left block">Maintenance & Service Kits</a></li>
+                <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left block">Genuine Parts Supply</a></li>
+                <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left block">Stainless Steel Keg Supply</a></li>
+                <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer text-left block">Dispensing Taps</a></li>
               </ul>
             </div>
 

@@ -137,9 +137,9 @@ export default React.memo(function SiteIndex({ onNavigate }: SiteIndexProps) {
     },
     {
       num: '02',
-      title: 'Keg Repair & Structural Restoration',
+      title: 'Keg Repair, Restoration & Service Kits',
       icon: Wrench,
-      desc: 'Hydraulic chime re-rolling, neck collar straightening, dent correction, and precision TIG welding.',
+      desc: 'Hydraulic chime re-rolling, neck collar straightening, dent correction, spear extraction keys, torque wrenches, and on-site toolkits.',
       path: '/services'
     },
     {
@@ -165,13 +165,6 @@ export default React.memo(function SiteIndex({ onNavigate }: SiteIndexProps) {
     },
     {
       num: '06',
-      title: 'Maintenance & Service Kits',
-      icon: PenTool,
-      desc: 'Calibrated torque wrenches, spear extraction keys, portable pressure test manifolds, and on-site toolsets.',
-      path: '/services'
-    },
-    {
-      num: '07',
       title: 'Draught Dispensing Taps',
       icon: Beer,
       desc: 'Forward-sealing flow control taps, heavy-duty event faucets, line-flush adapters, and A/S/D type coupler fittings.',

@@ -36,8 +36,8 @@ import {
 } from 'lucide-react';
 
 import heroImg from '../assets/images/services_hero_1779722089553.png';
-import sanitationImg from '../assets/images/service_sanitation_1779717414016.png';
-import repairImg from '../assets/images/service_repair_1779717434332.png';
+import sanitationImg from '../assets/images/service_sanitation_1779717414016.jpg';
+import repairImg from '../assets/images/service_repair_1779717434332.jpg';
 import valveImg from '../assets/images/service_valves_1779717454901.png';
 import partsImg from '../assets/images/service_parts_1779717475851.webp';
 import stainlessKegImg from '../assets/images/stainless_steel_kegs_1791562507509.jpg';
@@ -377,7 +377,7 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
             variants={staggerContainer}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-8"
           >
             {/* Service 1 */}
             <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group rounded-sm overflow-hidden relative transition-all duration-300 hover:-translate-y-2">
@@ -427,18 +427,17 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
                 <AnimatedRepairIcon />
               </div>
               <div className="p-6 pt-9 flex flex-col flex-grow">
-                <h3 className="text-xl font-bold text-[#183346] mb-3 font-serif group-hover:text-[#C5A059] transition-colors duration-300">2. Keg Repair & Structural<br/>Restoration</h3>
+                <h3 className="text-xl font-bold text-[#183346] mb-3 font-serif group-hover:text-[#C5A059] transition-colors duration-300">2. Keg Repair, Restoration &<br/>Service Kits</h3>
                 <p className="text-[14px] text-slate-600 mb-6 border-b border-slate-100 pb-6 flex-grow">
-                  Restore structural integrity, eliminate leaks, and
-                  extend the operational life of your kegs.
+                  Restore structural integrity, eliminate leaks, and equip your brewery with dedicated maintenance tools and kits.
                 </p>
                 <ul className="space-y-3 mb-6 text-[14px] text-slate-700">
                   <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Dent removal & body repair</li>
-                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Neck straightening & alignment</li>
-                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Chime (top & bottom) restoration</li>
-                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Spear alignment & system check</li>
-                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Leak correction & pressure testing</li>
-                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Final inspection & approval</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Neck straightening & chime restoration</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Spear extraction keys & torque wrenches</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Universal seal replacement toolkits</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Leak correction & pressure integrity testing</li>
+                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />On-site technician starter & field kits</li>
                 </ul>
                 <div className="bg-slate-50 p-3.5 flex items-center gap-3 mb-6 group-hover:bg-slate-100 transition-colors">
                   <Clock className="w-5 h-5 text-slate-400 shrink-0 group-hover:text-[#C5A059] group-hover:rotate-[360deg] transition-all duration-700" />
@@ -451,7 +450,7 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
                   onClick={() => onNavigate?.('contact')}
                   className="w-full bg-[#C5A059] text-white py-3.5 font-semibold hover:bg-[#a38043] transition-colors flex items-center justify-center rounded-sm cursor-pointer text-sm"
                 >
-                  Book Inspection <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  Book Inspection & Kits <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
             </motion.div>
@@ -572,47 +571,7 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
               </div>
             </motion.div>
 
-            {/* Service 6: Maintenance & Service Kits */}
-            <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group rounded-sm overflow-hidden relative transition-all duration-300 hover:-translate-y-2">
-              <div className="relative h-52 shrink-0 w-full bg-slate-100">
-                <div className="w-full h-full overflow-hidden">
-                  <img src={kegToolsImg} alt="Brewery Keg Maintenance Tools, Torque Keys, and Spear Extraction Kits" width={600} height={400} loading="lazy" decoding="async" className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 block" referrerPolicy="no-referrer" />
-                </div>
-                <div className="absolute -bottom-6 left-6 w-12 h-12 bg-[#111827] group-hover:bg-[#C5A059] transition-colors duration-300 rounded-full flex items-center justify-center border-4 border-white z-20 shadow-lg">
-                  <div className="absolute inset-0 bg-[#C5A059]/20 rounded-full scale-0 group-hover:scale-125 transition-transform duration-500 blur-[2px]" />
-                  <PenTool className="w-5 h-5 text-white relative z-10 group-hover:rotate-45 transition-transform duration-500" />
-                </div>
-              </div>
-              <div className="p-6 pt-9 flex flex-col flex-grow">
-                <h3 className="text-xl font-bold text-[#183346] mb-3 font-serif group-hover:text-[#C5A059] transition-colors duration-300">6. Maintenance &<br/>Service Kits</h3>
-                <p className="text-[14px] text-slate-600 mb-6 border-b border-slate-100 pb-6 flex-grow">
-                  Complete valve extraction tools, seal replacement kits, torque keys, and specialized maintenance kits to support on-site brewery technicians.
-                </p>
-                <ul className="space-y-3 mb-6 text-[14px] text-slate-700 flex-grow">
-                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Complete valve & spear extraction tools</li>
-                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Universal seal replacement toolkits</li>
-                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Calibrated spear torque keys & wrenches</li>
-                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Safety latch release and disassembly jigs</li>
-                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />On-site technician starter & field kits</li>
-                  <li className="flex items-start"><Check className="w-4 h-4 text-slate-900 mr-2.5 mt-0.5 shrink-0 group-hover:text-[#C5A059] transition-colors" />Portable pressure testing manifold kits</li>
-                </ul>
-                <div className="bg-slate-50 p-3.5 flex items-center gap-3 mb-6 mt-auto group-hover:bg-slate-100 transition-colors">
-                  <Clock className="w-5 h-5 text-slate-400 shrink-0 group-hover:text-[#C5A059] group-hover:rotate-[360deg] transition-all duration-700" />
-                  <div>
-                    <div className="text-xs font-bold text-slate-900">Availability</div>
-                    <div className="text-xs text-slate-500">In stock with technical guides</div>
-                  </div>
-                </div>
-                <button 
-                  onClick={() => onNavigate?.('contact')}
-                  className="w-full bg-[#C5A059] text-white py-3.5 font-semibold hover:bg-[#a38043] transition-colors flex items-center justify-center rounded-sm cursor-pointer text-sm"
-                >
-                  Order Service Kits <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            </motion.div>
-
-            {/* Service 7: Dispensing Taps */}
+            {/* Service 6: Dispensing Taps */}
             <motion.div variants={fadeInUp} className="bg-white shadow-sm hover:shadow-xl border border-slate-100 flex flex-col group rounded-sm overflow-hidden relative transition-all duration-300 hover:-translate-y-2">
               <div className="relative h-52 shrink-0 w-full bg-slate-100">
                 <div className="w-full h-full overflow-hidden">
@@ -624,7 +583,7 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
                 </div>
               </div>
               <div className="p-6 pt-9 flex flex-col flex-grow">
-                <h3 className="text-xl font-bold text-[#183346] mb-3 font-serif group-hover:text-[#C5A059] transition-colors duration-300">7. Dispensing<br/>Taps</h3>
+                <h3 className="text-xl font-bold text-[#183346] mb-3 font-serif group-hover:text-[#C5A059] transition-colors duration-300">6. Dispensing<br/>Taps</h3>
                 <p className="text-[14px] text-slate-600 mb-6 border-b border-slate-100 pb-6 flex-grow">
                   Supply of durable, high-performance dispensing taps for brewery and beverage dispensing applications.
                 </p>
