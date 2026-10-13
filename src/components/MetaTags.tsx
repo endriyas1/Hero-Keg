@@ -38,7 +38,7 @@ function updateMetaTag(selector: string, attribute: 'content' | 'href', value: s
 export function useMetaTags({
   title,
   description,
-  image = '/og-home.png',
+  image = '/og-home.jpg',
   imageAlt = 'Hero Keg Service and Trading PLC',
   urlPath = '/',
   type = 'website',

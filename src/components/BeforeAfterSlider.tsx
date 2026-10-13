@@ -1,12 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeftRight, Check, Sparkles, AlertCircle, RefreshCw, Layers, ShieldCheck, Hammer, ChevronLeft, ChevronRight } from 'lucide-react';
-import beforeBody from '../assets/images/keg_before_restoration_1779874960410.png';
-import afterBody from '../assets/images/keg_after_restoration_1779874979965.png';
-import beforeValve from '../assets/images/valve_before_1779884838991.jpg';
-import afterValve from '../assets/images/valve_after_1779884859346.jpg';
-import beforeChime from '../assets/images/chime_before_1779884875862.png';
-import afterChime from '../assets/images/chime_after_1779884891335.png';
+import beforeBody from '../assets/images/keg_before_restoration_1779874960410.webp';
+import afterBody from '../assets/images/keg_after_restoration_1779874979965.webp';
+import beforeValve from '../assets/images/valve_before_1779884838991.webp';
+import afterValve from '../assets/images/valve_after_1779884859346.webp';
+import beforeChime from '../assets/images/chime_before_1779884875862.webp';
+import afterChime from '../assets/images/chime_after_1779884891335.webp';
 
 interface SlideItem {
   id: string;

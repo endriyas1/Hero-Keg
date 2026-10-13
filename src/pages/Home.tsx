@@ -27,13 +27,13 @@ const BeforeAfterSlider = React.lazy(() =>
 
 import { PartnerMarquee } from '../components/PartnerMarquee';
 
-import heroImg from '../assets/images/home_hero_kegs_1779722365542.png';
-import sanitationImg from '../assets/images/service_sanitation_1779717414016.jpg';
-import repairImg from '../assets/images/service_repair_1779717434332.jpg';
-import valveImg from '../assets/images/service_valves_1779717454901.png';
+import heroImg from '../assets/images/home_hero_kegs_1779722365542.webp';
+import sanitationImg from '../assets/images/service_sanitation_1779717414016.webp';
+import repairImg from '../assets/images/service_repair_1779717434332.webp';
+import valveImg from '../assets/images/service_valves_1779717454901.webp';
 import partsImg from '../assets/images/service_parts_1779717475851.webp';
-import warehouseImg from '../assets/images/home_hero_kegs_1779722365542.png';
-import stainlessKegImg from '../assets/images/stainless_steel_kegs_1791562507509.jpg';
+import warehouseImg from '../assets/images/home_hero_kegs_1779722365542.webp';
+import stainlessKegImg from '../assets/images/stainless_steel_kegs_1791562507509.webp';
 import dispensingTapImg from '../assets/images/dispensing_taps_1791562526041.jpg';
 import kegToolsImg from '../assets/images/keg_tools_1791562540965.jpg';
 
@@ -120,7 +120,7 @@ export default React.memo(function Home({ onNavigate }: { onNavigate?: (page: 'h
     title: activeTitle,
     description: activeDescription,
     keywords: 'mobile keg service Ethiopia, keg repair Addis Ababa, brewery maintenance Ethiopia, keg sanitation, stainless steel kegs Ethiopia, chime straightening, spear overhaul, Hero Keg, why choose hero keg',
-    image: '/og-home.png',
+    image: '/og-home.jpg',
     imageAlt: 'Hero Keg Service - Professional Mobile Keg Maintenance & Inspection in Ethiopia',
     urlPath: activeUrlPath,
     schema: homeSchema

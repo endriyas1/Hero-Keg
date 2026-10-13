@@ -40,7 +40,7 @@ export function useSEO({
   title,
   description,
   keywords,
-  image = '/og-home.png',
+  image = '/og-home.jpg',
   imageAlt = 'Hero Keg Service and Trading PLC',
   urlPath = '/',
   type = 'website',
