@@ -23,11 +23,11 @@ import {
   ChevronRight
 } from 'lucide-react';
 
-import heroImg from '../assets/images/about_us_hero_1779723746302.png';
-import teamPortraitImg from '../assets/images/team_portrait_1779870192742.jpg';
-import teamWeldingImg from '../assets/images/team_welding_restoration_1779885868202.jpg';
-import teamInspectionImg from '../assets/images/team_inspection_lab_1779885888102.jpg';
-import teamSanitationImg from '../assets/images/team_sanitation_station_1779885906347.jpg';
+import heroImg from '../assets/images/about_us_hero_1779723746302.webp';
+import teamPortraitImg from '../assets/images/team_portrait_1779870192742.webp';
+import teamWeldingImg from '../assets/images/team_welding_restoration_1779885868202.webp';
+import teamInspectionImg from '../assets/images/team_inspection_lab_1779885888102.webp';
+import teamSanitationImg from '../assets/images/team_sanitation_station_1779885906347.webp';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -89,7 +89,7 @@ export default React.memo(function AboutUs({ onNavigate }: { onNavigate?: (page:
     title: 'About Us – Premier Mobile Keg Technicians in Ethiopia | Hero Keg',
     description: 'Hero Keg Service and Trading PLC is Ethiopia\'s premier partner for mobile keg maintenance, structural repairs, ultrasonic sanitation, and certified technical support in Addis Ababa.',
     keywords: 'about hero keg, keg maintenance Ethiopia, brewery partner Addis Ababa, professional keg repair, keg technicians, Ethiopian brewing industry',
-    image: '/og-about.png',
+    image: '/og-about.jpg',
     imageAlt: 'Hero Keg Service Team and Mobile Workshop in Ethiopia',
     urlPath: '/about',
     schema: aboutSchema

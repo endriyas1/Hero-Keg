@@ -35,12 +35,12 @@ import {
   Layers
 } from 'lucide-react';
 
-import heroImg from '../assets/images/services_hero_1779722089553.png';
-import sanitationImg from '../assets/images/service_sanitation_1779717414016.jpg';
-import repairImg from '../assets/images/service_repair_1779717434332.jpg';
-import valveImg from '../assets/images/service_valves_1779717454901.png';
+import heroImg from '../assets/images/services_hero_1779722089553.webp';
+import sanitationImg from '../assets/images/service_sanitation_1779717414016.webp';
+import repairImg from '../assets/images/service_repair_1779717434332.webp';
+import valveImg from '../assets/images/service_valves_1779717454901.webp';
 import partsImg from '../assets/images/service_parts_1779717475851.webp';
-import stainlessKegImg from '../assets/images/stainless_steel_kegs_1791562507509.jpg';
+import stainlessKegImg from '../assets/images/stainless_steel_kegs_1791562507509.webp';
 import dispensingTapImg from '../assets/images/dispensing_taps_1791562526041.jpg';
 import kegToolsImg from '../assets/images/keg_tools_1791562540965.jpg';
 
@@ -304,7 +304,7 @@ export default React.memo(function Services({ onNavigate }: { onNavigate?: (page
     title: 'Brewery Keg Services & Mobile Repairs in Ethiopia | Hero Keg',
     description: 'Specialized mobile keg maintenance in Ethiopia: ultrasonic sanitation, neck & chime straightening, spear overhaul, TIG welding, stainless steel kegs (20L, 30L, 50L) & genuine parts.',
     keywords: 'keg sanitation Ethiopia, mobile keg repair Addis Ababa, brewery maintenance Ethiopia, chime straightening, spear valve service, stainless steel keg supply, Hero Keg Service',
-    image: '/og-services.png',
+    image: '/og-services.jpg',
     imageAlt: 'Hero Keg Complete Service Solutions and Spare Parts in Ethiopia',
     urlPath: '/services',
     schema: servicesSchema

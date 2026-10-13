@@ -78,7 +78,7 @@ export default React.memo(function SiteIndex({ onNavigate }: SiteIndexProps) {
     title: 'Site Index & Directory – All Pages | Hero Keg Service',
     description: 'Complete index of all pages, technical services, keg repairs, and brewery resources available from Hero Keg Service & Trading PLC across Ethiopia.',
     keywords: 'hero keg sitemap, site index, all pages, brewery maintenance directory, mobile keg services index Ethiopia',
-    image: '/og-home.png',
+    image: '/og-home.jpg',
     imageAlt: 'Hero Keg Service and Trading PLC Site Directory',
     urlPath: '/sitemap',
     schema: sitemapSchema
