@@ -231,7 +231,6 @@ export default function App() {
                 <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors">Services</a></li>
                 <li><a href="/why-choose-us" onClick={(e) => { e.preventDefault(); scrollToWhyChooseUs(); }} className="text-sm text-slate-400 hover:text-white transition-colors">Why Choose Us</a></li>
                 <li><a href="/contact" onClick={(e) => { e.preventDefault(); handleNavigate('contact'); }} className="text-sm text-slate-400 hover:text-white transition-colors">Contact Us</a></li>
-                <li><a href="/sitemap" onClick={(e) => { e.preventDefault(); handleNavigate('sitemap'); }} className="text-sm text-[#C5A059] hover:underline transition-colors">Site Index (All Pages)</a></li>
               </ul>
             </div>
 
@@ -274,14 +273,6 @@ export default function App() {
               © 2026 Hero Keg Service and Trading PLC. All Rights Reserved.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400">
-              <a href="/sitemap" onClick={(e) => { e.preventDefault(); handleNavigate('sitemap'); }} className="hover:text-[#C5A059] transition-colors">
-                HTML Site Index
-              </a>
-              <span className="text-slate-600">•</span>
-              <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer" className="hover:text-[#C5A059] transition-colors">
-                XML Sitemap
-              </a>
-              <span className="text-slate-600">•</span>
               <a href="/robots.txt" target="_blank" rel="noopener noreferrer" className="hover:text-[#C5A059] transition-colors">
                 Robots.txt
               </a>
