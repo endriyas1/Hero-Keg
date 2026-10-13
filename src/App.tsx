@@ -231,7 +231,6 @@ export default function App() {
                 <li><a href="/services" onClick={(e) => { e.preventDefault(); handleNavigate('services'); }} className="text-sm text-slate-400 hover:text-white transition-colors">Services</a></li>
                 <li><a href="/why-choose-us" onClick={(e) => { e.preventDefault(); scrollToWhyChooseUs(); }} className="text-sm text-slate-400 hover:text-white transition-colors">Why Choose Us</a></li>
                 <li><a href="/contact" onClick={(e) => { e.preventDefault(); handleNavigate('contact'); }} className="text-sm text-slate-400 hover:text-white transition-colors">Contact Us</a></li>
-                <li><a href="/sitemap" onClick={(e) => { e.preventDefault(); handleNavigate('sitemap'); }} className="text-sm text-[#C5A059] hover:underline transition-colors">Site Index (All Pages)</a></li>
               </ul>
             </div>
 
