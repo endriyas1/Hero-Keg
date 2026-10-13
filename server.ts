@@ -10,18 +10,91 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-app.use(express.json());
+app.set('trust proxy', 1);
+app.use(express.json({ limit: '20kb' }));
+
+const FALLBACK_CONTACT = 'Please call us on +251 943 739 086 or email herokegservice@gmail.com.';
+
+// Escape user input before placing it in the HTML email
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function field(value: unknown, maxLength: number): string {
+  return typeof value === 'string' ? value.trim().slice(0, maxLength) : '';
+}
+
+// Simple in-memory rate limit: 5 submissions per IP per 15 minutes
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+const RATE_LIMIT_MAX = 5;
+const submissionsByIp = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (submissionsByIp.get(ip) || []).filter(t => now - t < RATE_LIMIT_WINDOW_MS);
+  if (recent.length >= RATE_LIMIT_MAX) {
+    submissionsByIp.set(ip, recent);
+    return true;
+  }
+  recent.push(now);
+  submissionsByIp.set(ip, recent);
+  return false;
+}
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, times] of submissionsByIp) {
+    if (times.every(t => now - t >= RATE_LIMIT_WINDOW_MS)) submissionsByIp.delete(ip);
+  }
+}, RATE_LIMIT_WINDOW_MS).unref();
 
 // API route for Contact Form
 app.post('/api/contact', async (req: express.Request, res: express.Response) => {
   try {
-    const { name, company, email, phone, service, kegs, subject, message } = req.body;
+    const body = req.body || {};
+
+    // Honeypot: real visitors never see this field, so a filled value means a bot.
+    // Reply as if it worked so the bot doesn't retry.
+    if (field(body.website, 200)) {
+      return res.status(200).json({
+        success: true,
+        message: 'Your inquiry has been submitted and sent successfully.'
+      });
+    }
+
+    if (isRateLimited(req.ip || 'unknown')) {
+      return res.status(429).json({
+        success: false,
+        message: `Too many submissions from your connection. ${FALLBACK_CONTACT}`
+      });
+    }
+
+    const name = field(body.name, 100);
+    const company = field(body.company, 150);
+    const email = field(body.email, 200);
+    const phone = field(body.phone, 50);
+    const service = field(body.service, 100);
+    const kegs = field(body.kegs, 20);
+    const subject = field(body.subject, 200);
+    const message = field(body.message, 5000);
 
     // Validate request
     if (!name || !company || !email || !phone || !subject || !message) {
       return res.status(400).json({
         success: false,
         message: 'Please fill in all required fields.'
+      });
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please enter a valid email address.'
       });
     }
 
@@ -32,14 +105,25 @@ app.post('/api/contact', async (req: express.Request, res: express.Response) => 
     console.log(`[Contact Form] Submission received:`, { name, company, email, subject });
 
     if (!gmailUser || !gmailPass) {
-      console.warn('[Gmail SMTP] GMAIL_USER or GMAIL_APP_PASSWORD credentials are missing. Simulating delivery.');
-      return res.status(200).json({
-        success: true,
-        simulated: true,
-        message: 'Gmail SMTP credentials are not configured in environment variables. The form submission was simulated successfully on the server.',
-        data: { name, company, email, phone, service, kegs, subject, message }
+      // Never pretend the inquiry was delivered: the lead would be lost.
+      console.error('[Gmail SMTP] GMAIL_USER or GMAIL_APP_PASSWORD is not set. Inquiry NOT delivered:', { name, company, email, phone, subject });
+      return res.status(503).json({
+        success: false,
+        message: `Our online form is temporarily unavailable. ${FALLBACK_CONTACT}`
       });
     }
+
+    const html = {
+      name: escapeHtml(name),
+      company: escapeHtml(company),
+      email: escapeHtml(email),
+      phone: escapeHtml(phone),
+      service: escapeHtml(service || 'Not specified'),
+      kegs: escapeHtml(kegs || 'Not specified'),
+      subject: escapeHtml(subject),
+      message: escapeHtml(message),
+    };
+    const senderName = `${name} (${company})`.replace(/["\r\n]/g, '');
 
     // Lazy initialize nodemailer transporter
     const transporter = nodemailer.createTransport({
@@ -51,10 +135,10 @@ app.post('/api/contact', async (req: express.Request, res: express.Response) => 
     });
 
     const mailOptions = {
-      from: `"${name} (${company})" <${gmailUser}>`, // Must send from the authenticated Gmail address
+      from: `"${senderName}" <${gmailUser}>`, // Must send from the authenticated Gmail address
       to: recipient,
       replyTo: email, // Extremely important so replies go to the user
-      subject: `[Hero Keg Inquiry] ${subject}`,
+      subject: `[Hero Keg Inquiry] ${subject.replace(/[\r\n]+/g, ' ')}`,
       text: `
 New inquiry received from Hero Keg Contact Form:
 
@@ -81,33 +165,33 @@ ${message}
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
       <tr>
         <td style="padding: 8px 0; font-weight: bold; width: 35%; color: #4b5563;">Name:</td>
-        <td style="padding: 8px 0; color: #1f2937;">${name}</td>
+        <td style="padding: 8px 0; color: #1f2937;">${html.name}</td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-weight: bold; color: #4b5563;">Company:</td>
-        <td style="padding: 8px 0; color: #1f2937;">${company}</td>
+        <td style="padding: 8px 0; color: #1f2937;">${html.company}</td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-weight: bold; color: #4b5563;">Email Address:</td>
-        <td style="padding: 8px 0; color: #1f2937;"><a href="mailto:${email}" style="color: #C5A059; text-decoration: none;">${email}</a></td>
+        <td style="padding: 8px 0; color: #1f2937;"><a href="mailto:${html.email}" style="color: #C5A059; text-decoration: none;">${html.email}</a></td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-weight: bold; color: #4b5563;">Phone Number:</td>
-        <td style="padding: 8px 0; color: #1f2937;"><a href="tel:${phone}" style="color: #C5A059; text-decoration: none;">${phone}</a></td>
+        <td style="padding: 8px 0; color: #1f2937;"><a href="tel:${html.phone}" style="color: #C5A059; text-decoration: none;">${html.phone}</a></td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-weight: bold; color: #4b5563;">Service Required:</td>
-        <td style="padding: 8px 0; color: #1f2937;">${service || 'Not specified'}</td>
+        <td style="padding: 8px 0; color: #1f2937;">${html.service}</td>
       </tr>
       <tr>
         <td style="padding: 8px 0; font-weight: bold; color: #4b5563;">Approx. Kegs:</td>
-        <td style="padding: 8px 0; color: #1f2937;">${kegs || 'Not specified'}</td>
+        <td style="padding: 8px 0; color: #1f2937;">${html.kegs}</td>
       </tr>
     </table>
 
-    <h2 style="font-size: 18px; font-weight: bold; border-bottom: 2px solid #C5A059; padding-bottom: 8px; color: #183346; margin-top: 24px;">Subject: ${subject}</h2>
+    <h2 style="font-size: 18px; font-weight: bold; border-bottom: 2px solid #C5A059; padding-bottom: 8px; color: #183346; margin-top: 24px;">Subject: ${html.subject}</h2>
     <div style="background-color: #f9fafb; padding: 16px; border-radius: 4px; border-left: 4px solid #C5A059; margin-top: 12px; white-space: pre-wrap; font-size: 14px; color: #374151;">
-${message}
+${html.message}
     </div>
   </div>
   <div style="background-color: #f3f4f6; color: #6b7280; text-align: center; padding: 12px; font-size: 12px; border-top: 1px solid #e5e7eb;">
@@ -122,7 +206,6 @@ ${message}
 
     return res.status(200).json({
       success: true,
-      simulated: false,
       message: 'Your inquiry has been submitted and sent successfully.'
     });
 
@@ -130,8 +213,7 @@ ${message}
     console.error('[Gmail SMTP Error] Failed to send email:', error);
     return res.status(500).json({
       success: false,
-      message: 'An error occurred while routing your inquiry via email. Please check your SMTP settings or try again later.',
-      error: error?.message || 'Unknown error'
+      message: `We couldn't send your inquiry right now. ${FALLBACK_CONTACT}`
     });
   }
 });

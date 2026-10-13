@@ -14,7 +14,7 @@ import {
   Navigation
 } from 'lucide-react';
 
-import contactHeroImg from '../assets/images/contact_hero_1779725491927.png';
+import contactHeroImg from '../assets/images/contact_hero_1779725491927.webp';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -105,7 +105,7 @@ export default React.memo(function ContactUs() {
     title: 'Contact Hero Keg – Mobile Keg Service & Brewery Support in Ethiopia',
     description: 'Contact Hero Keg Service and Trading PLC in Addis Ababa, Ethiopia. Request an on-site mobile service quote, schedule keg inspection, or order genuine parts.',
     keywords: 'contact hero keg, keg service Ethiopia, brewery support Addis Ababa, keg repair quote, commercial keg maintenance',
-    image: '/og-contact.png',
+    image: '/og-contact.jpg',
     imageAlt: 'Hero Keg Service and Trading PLC - Facility Location and Contact in Addis Ababa',
     urlPath: '/contact',
     schema: contactSchema
@@ -120,13 +120,13 @@ export default React.memo(function ContactUs() {
     kegs: '',
     subject: '',
     message: '',
-    agreed: false
+    agreed: false,
+    website: ''
   });
 
   const [status, setStatus] = useState<{
     submitting: boolean;
     success?: boolean;
-    simulated?: boolean;
     message?: string;
   }>({
     submitting: false
@@ -180,7 +180,6 @@ export default React.memo(function ContactUs() {
         setStatus({
           submitting: false,
           success: true,
-          simulated: result.simulated,
           message: result.message
         });
         
@@ -194,7 +193,8 @@ export default React.memo(function ContactUs() {
           kegs: '',
           subject: '',
           message: '',
-          agreed: false
+          agreed: false,
+          website: ''
         });
       } else {
         setStatus({
@@ -353,36 +353,21 @@ export default React.memo(function ContactUs() {
                   exit={{ opacity: 0, y: -10 }}
                   className={`p-5 mb-8 rounded-sm border ${
                     status.success
-                      ? status.simulated
-                        ? 'bg-amber-50 border-amber-200 text-amber-800'
-                        : 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                      ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
                       : 'bg-red-50 border-red-200 text-red-800'
                   }`}
                 >
                   <div className="flex items-start">
                     {status.success ? (
-                      status.simulated ? (
-                        <AnimatedCheckmark className="w-5 h-5 text-amber-600 mr-3 flex-shrink-0 mt-0.5" />
-                      ) : (
-                        <AnimatedCheckmark className="w-5 h-5 text-emerald-600 mr-3 flex-shrink-0 mt-0.5" />
-                      )
+                      <AnimatedCheckmark className="w-5 h-5 text-emerald-600 mr-3 flex-shrink-0 mt-0.5" />
                     ) : (
                       <AlertTriangle className="w-5 h-5 text-red-600 mr-3 flex-shrink-0 mt-0.5" />
                     )}
                     <div>
                       <p className="text-sm font-bold">
-                        {status.success 
-                          ? status.simulated 
-                            ? 'Form Submitted (Developer Mode)' 
-                            : 'Message Sent Successfully!' 
-                          : 'Submission Error'}
+                        {status.success ? 'Message Sent Successfully!' : 'Submission Error'}
                       </p>
                       <p className="text-sm mt-1">{status.message}</p>
-                      {status.simulated && (
-                        <p className="text-xs mt-3 text-amber-700/80 leading-relaxed font-mono">
-                          Tip: To deliver real emails, set the <strong className="font-semibold">GMAIL_USER</strong> and <strong className="font-semibold">GMAIL_APP_PASSWORD</strong> variables in AI Studio secrets.
-                        </p>
-                      )}
                     </div>
                   </div>
                 </motion.div>
@@ -517,40 +502,22 @@ export default React.memo(function ContactUs() {
                 ></textarea>
               </div>
               
-              {/* Fake reCAPTCHA */}
-              <div 
-                className="bg-slate-50 border border-slate-200 p-4 rounded-sm flex items-center justify-between w-[304px] hover:border-slate-300 transition-colors cursor-pointer select-none"
-                onClick={() => setFormData(prev => ({ ...prev, agreed: !prev.agreed }))}
-              >
-                <div className="flex items-center group/recaptcha">
-                  <div className={`w-7 h-7 rounded-sm mr-3 flex items-center justify-center border-2 transition-all ${
-                    formData.agreed 
-                      ? 'bg-emerald-500 border-emerald-600 shadow-inner' 
-                      : 'bg-white border-slate-300 group-hover/recaptcha:border-[#C5A059]'
-                  }`}>
-                    {formData.agreed && (
-                      <motion.svg 
-                        initial={{ scale: 0 }} 
-                        animate={{ scale: 1 }} 
-                        className="w-4 h-4 text-white" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor" 
-                        strokeWidth={3}
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </motion.svg>
-                    )}
-                  </div>
-                  <span className="text-sm text-slate-750 font-medium">I verify this inquiry is real</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-6 h-6 bg-slate-400/20 mb-1 rounded-sm flex items-center justify-center text-[10px] text-slate-500 font-bold">✓</div>
-                  <span className="text-[9px] text-slate-400 leading-tight text-center">Hero Anti-Spam</span>
-                </div>
+              {/* Honeypot: hidden from people, filled in by spam bots */}
+              <div className="absolute -left-[9999px] w-px h-px overflow-hidden" aria-hidden="true">
+                <label>
+                  Website
+                  <input
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={formData.website}
+                    onChange={handleChange}
+                  />
+                </label>
               </div>
 
-              <div className="flex items-center mt-2 group/check cursor-pointer" onClick={() => setFormData(prev => ({ ...prev, agreed: !prev.agreed }))}>
+              <label className="flex items-center mt-2 group/check cursor-pointer">
                 <input
                   type="checkbox"
                   name="agreed"
@@ -559,7 +526,7 @@ export default React.memo(function ContactUs() {
                   className="w-4 h-4 border-slate-300 rounded-sm mr-3 text-[#183346] focus:ring-[#183346] cursor-pointer group-hover/check:border-[#183346] transition-colors"
                 />
                 <span className="text-[15px] text-slate-600 group-hover/check:text-slate-900 transition-colors">I agree to be contacted about my inquiry.</span>
-              </div>
+              </label>
 
               <div className="flex items-center justify-between pt-4">
                 <span className="text-xs text-slate-500"><span className="text-red-500">*</span> Required fields</span>
