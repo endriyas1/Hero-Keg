@@ -1,4 +1,4 @@
-# 06 — Final Report (status: findings ranked, fixes awaiting approval)
+# 06 — Final Report (status: fixes applied on branch, not deployed)
 
 - **Date:** 2026-10-26
 - **Repository:** `endriyas1/Hero-Keg` at `586fc60` (main)
@@ -43,20 +43,20 @@ The contact endpoint is well defended against the classic attacks:
 
 | ID | Title | Severity | Confidence | Component | Evidence | Fix status | Regression test |
 |---|---|---|---|---|---|---|---|
-| F-02 | Vite dev server serves the repo if `NODE_ENV` is unset | High (conditional) | Confirmed locally; production unknown | `package.json` start, `server.ts:236` | 03 §F-02 | Open, proposed | `serves the built SPA, not the Vite dev client`. Passes under the harness, which sets `NODE_ENV`; production needs the manual check. |
-| F-01 | Server bundle + sourcemap publicly served | Medium | High (local) | build script, `server.ts:243` | 03 §F-01 | Open, proposed | 2 tests ❌ |
-| F-04 | Vulnerable runtime dependencies (13 advisories; reachable: body-parser, qs, nodemailer) | Medium | High | `package-lock.json` | 04 | Open, proposed (`npm audit fix`); nodemailer major needs approval | `npm audit --omit=dev` |
-| F-03 | No security headers; `X-Powered-By` exposed | Low–Medium | High (local) | `server.ts` | 03 §F-03 | Open, proposed | 5 tests ❌ |
+| F-02 | Vite dev server serves the repo if `NODE_ENV` is unset | High (conditional) | Confirmed locally; production unknown | `package.json` start, `server.ts:236` | 03 §F-02 | **Fixed on branch:** the built server always runs in production mode; `start` sets `NODE_ENV`; Vite loads only in development | `built server with NODE_ENV unset` ✅ (fails on the old server) |
+| F-01 | Server bundle + sourcemap publicly served | Medium | High (local) | build script, `server.ts:243` | 03 §F-01 | **Fixed on branch:** no server sourcemap; `/server.cjs*` returns 404 | 2 tests ✅ |
+| F-04 | Vulnerable runtime dependencies (13 advisories; reachable: body-parser, qs, nodemailer) | Medium | High | `package-lock.json` | 04 | **Partly fixed:** `npm audit fix` and `@google/genai` removed, leaving 1 production advisory (nodemailer, needs major 10.x, **open**) | `npm audit --omit=dev` |
+| F-03 | No security headers; `X-Powered-By` exposed | Low–Medium | High (local) | `server.ts` | 03 §F-03 | **Fixed on branch:** CSP, nosniff, X-Frame-Options, Referrer-Policy, HSTS; `X-Powered-By` off | 5 tests ✅ |
 | F-07 | Rate limit per-instance; depends on proxy topology | Low–Medium | Medium | `server.ts:13, 32-54` | 03 §F-07 | Open; needs hosting info | 2 tests ✅ (one-hop case) |
-| F-05 | Submitter PII logged on every submission | Low | High | `server.ts:105` | 03 §F-05 | Open, proposed | 1 test ❌ |
-| F-06 | Email field accepts address lists → multi-address Reply-To | Low | High | `server.ts:94` | 03 §F-06 | Open, proposed | 1 test ❌ |
-| F-08 | Unknown `/api/*` and wrong methods return 200 HTML; parser errors return HTML | Low | High | `server.ts:245` | 03 §F-08 | Open, proposed | 3 tests ❌ |
-| F-09 | Client reports non-JSON errors as network failure | Low | High | `ContactUs.tsx:177-212` | 01 §F-09 | Open, proposed | e2e ❌ (2 viewports) |
-| F-10 | Form labels not associated with inputs (WCAG 1.3.1/4.1.2) | Low | High | `ContactUs.tsx:378-500` | 01 §F-10 | Open, proposed | e2e ❌ (2 viewports) |
-| F-11 | No compression; hashed assets not cacheable | Low (perf) | High locally / CDN unknown | `server.ts:244` | 05 §F-11 | Open, proposed | — (manual header check) |
-| F-13 | No SMTP timeouts; transporter per request | Low | Medium | `server.ts:129` | 03 §F-13 | Open, proposed | Not covered (needs fake-SMTP stall test) |
+| F-05 | Submitter PII logged on every submission | Low | High | `server.ts:105` | 03 §F-05 | **Fixed on branch:** per-submission PII log removed (SMTP-unconfigured fallback log kept) | 1 test ✅ |
+| F-06 | Email field accepts address lists → multi-address Reply-To | Low | High | `server.ts:94` | 03 §F-06 | **Fixed on branch:** single-address pattern | 1 test ✅ |
+| F-08 | Unknown `/api/*` and wrong methods return 200 HTML; parser errors return HTML | Low | High | `server.ts:245` | 03 §F-08 | **Fixed on branch:** `/api/*` 404 JSON, 405 on `/api/contact`, JSON parser errors | 3 tests + 405 test ✅ |
+| F-09 | Client reports non-JSON errors as network failure | Low | High | `ContactUs.tsx:177-212` | 01 §F-09 | **Fixed on branch** | e2e ✅ (2 viewports) |
+| F-10 | Form labels not associated with inputs (WCAG 1.3.1/4.1.2) | Low | High | `ContactUs.tsx:378-500` | 01 §F-10 | **Fixed on branch** | e2e ✅ (2 viewports) |
+| F-11 | No compression; hashed assets not cacheable | Low (perf) | High locally / CDN unknown | `server.ts:244` | 05 §F-11 | **Fixed on branch:** gzip, plus `max-age=1y, immutable` on `/assets` | `serves hashed assets compressed…` ✅ |
+| F-13 | No SMTP timeouts; transporter per request | Low | Medium | `server.ts:129` | 03 §F-13 | **Fixed on branch:** one transporter with 15 s timeouts | Not covered (needs a fake SMTP server that stalls) |
 | F-15 | Canonical/sitemap domain (`herokegservice.com`) differs from production (`herokeg.com`) | Info (SEO/brand) | High | `index.html`, `useSEO.ts`, `public/*` | 04 | Open; needs your decision | — |
-| F-12 | Unused `@google/genai`; build tools in runtime deps | Info | High | `package.json` | 04 | Open, proposed | — |
+| F-12 | Unused `@google/genai`; build tools in runtime deps | Info | High | `package.json` | 04 | **Partly fixed:** `@google/genai` removed; build tools still in `dependencies` (see §G) | — |
 | F-14 | Facebook icon is a dead `<button>` | Info | High | `App.tsx:275` | 01 | Open | — |
 
 **Reproduction:**
@@ -69,7 +69,7 @@ npm run test:e2e    # build + 40 Playwright tests (Chromium)
 
 Each ❌ above is a failing test that names the finding in a comment.
 
-## C. Security test results
+## C. Security test results (before fixes — see §G for after)
 
 | Suite | Executed | Passed | Failed (= open findings) | Skipped |
 |---|---|---|---|---|
@@ -82,7 +82,7 @@ Each ❌ above is a failing test that names the finding in a comment.
 \* The first e2e run also failed `/contact` on both viewports. The Google Maps iframe can't load in this sandbox; this was not a site defect, and the check now ignores third-party requests.
 
 - **Vulnerabilities reproduced (locally):** F-01, F-02 (dev mode), F-03, F-05, F-06, F-08, F-09, F-10, F-11.
-- **Vulnerabilities fixed:** none yet. Fixes need your approval (§F).
+- **Vulnerabilities fixed:** F-01, F-02, F-03, F-05, F-06, F-08, F-09, F-10, F-11, F-13; F-04 and F-12 partly (§G).
 - **Remaining unverified risks:**
   - whether F-01/F-02/F-03/F-11 hold on `herokeg.com`
   - hosting proxy chain (F-07)
@@ -113,7 +113,7 @@ See `05-reliability-and-performance.md`.
 - [ ] `npm test` and `npm run test:e2e` green on the release commit
 - [ ] Production deployment authorized by the owner
 
-## F. Proposed fix set (awaiting approval; nothing applied yet)
+## F. Fix set (applied — see §G — except the nodemailer 10 upgrade)
 
 These are small, local changes on this branch. Each turns its failing tests green. No deployment.
 
@@ -133,3 +133,42 @@ These are small, local changes on this branch. Each turns its failing tests gree
 11. **F-13:** a single transporter with 15 s timeouts.
 
 **Needs your input rather than code:** F-07 (hosting chain), F-15 (which domain is canonical), F-14 (Facebook URL).
+
+
+## G. Remediation results (Phases 10–11)
+
+All changes are on branch `claude/gifted-dirac-wsuiix`. **Nothing was deployed** and no production setting was changed.
+
+### Changes
+
+| File | Change |
+|---|---|
+| `server.ts` | Security headers + CSP (production only), `x-powered-by` off, `compression`, `/server.cjs*` blocked, immutable `/assets` caching, production mode forced when running `dist/server.cjs`, dynamic `import('vite')`, stricter email pattern, PII log line removed, shared SMTP transporter with timeouts, `/api` 404/405 and JSON error handler |
+| `package.json` | `start` sets `NODE_ENV=production`; server build has no `--sourcemap`; `test` and `test:e2e` scripts; `+compression`, `−@google/genai`; dev: `vitest@5.0.5`, `@playwright/test@1.56.1`, `@types/compression` |
+| `package-lock.json` | `npm audit fix` (non-major). Now at express 4.22.3, body-parser 1.20.9, qs 6.16.1, proxy-addr 2.0.8, vite 6.4.5, nodemailer 8.0.11 |
+| `src/pages/ContactUs.tsx` | Non-JSON responses handled with a phone/email fallback; `id`/`htmlFor` on all form controls |
+
+### Validation
+
+| Check | Result |
+|---|---|
+| `npm run lint` (tsc) | ✅ |
+| `npm run build` | ✅ (`dist/server.cjs` only, no `.map`) |
+| Integration: **old** server build | 15 failed / 35 passed: the tests detect the original issues |
+| Integration: fixed build | **50 / 50 passed** |
+| E2E Chromium desktop + mobile | **39 passed, 1 skipped** (mobile-only menu test on desktop). No CSP violations on any route. The CSP is evaluated before network access, so the Fonts and Maps sources are confirmed allowed even though this sandbox can't load them. |
+| `npm run dev` | ✅ Vite dev server with HMR client still works |
+| `npm start` | ✅ Production build; `/server.cjs` returns 404; CSP and X-Frame-Options present |
+| `npm audit --omit=dev` | 1 high (nodemailer ≤ 10.1.3; fix is a major upgrade) |
+| `npm audit` (incl. dev) | Same single advisory |
+
+### Still open
+
+- **nodemailer 8 → 10:** semver-major. Needs a real Gmail send from staging or a preview deploy before merging.
+- **F-07:** rate-limit correctness depends on the proxy chain in front of `herokeg.com`. Waiting on your answer.
+- **F-15:** canonical domain decision.
+- **F-14:** Facebook URL.
+- **F-12 (rest):** `vite`, `@vitejs/plugin-react` and `@tailwindcss/vite` remain in `dependencies`. The deploy pipeline may install with `--omit=dev` before `npm run build`, so moving them could break the build. Move them only once the AI Studio/Cloud Run build steps are known.
+- **HSTS** is now sent with `max-age=31536000`, without `includeSubDomains` or `preload`. Confirm every page of `herokeg.com` is served over HTTPS before deploying; browsers will refuse plain HTTP for a year.
+- **Production verification:** after deploying, re-check `view-source:https://herokeg.com/` (no `/@vite/client`), `/server.cjs.map` (404) and the response headers.
+- **Firefox/WebKit** e2e runs.

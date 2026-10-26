@@ -35,11 +35,19 @@ async function horizontalOverflow(page: Page) {
 for (const [path, title] of routes) {
   test(`direct navigation to ${path} renders its page without errors or overflow`, async ({ page }) => {
     const errors = collectErrors(page);
+    await page.addInitScript(() => {
+      (window as any).__cspViolations = [];
+      document.addEventListener('securitypolicyviolation', (e) =>
+        (window as any).__cspViolations.push(`${e.violatedDirective} ${e.blockedURI}`),
+      );
+    });
     await page.goto(path);
     await expect(page).toHaveTitle(title);
     await expect(page.locator('h1').first()).toBeVisible();
     await page.waitForLoadState('networkidle');
     expect(errors).toEqual([]);
+    // The Content-Security-Policy must not block anything the site itself uses
+    expect(await page.evaluate(() => (window as any).__cspViolations)).toEqual([]);
     expect(await horizontalOverflow(page)).toBeLessThanOrEqual(1);
 
     // A browser refresh lands on the same page.

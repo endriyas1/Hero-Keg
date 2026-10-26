@@ -1,8 +1,8 @@
 import express from 'express';
+import compression from 'compression';
 import path from 'path';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
-import { createServer as createViteServer } from 'vite';
 
 // Load env variables
 dotenv.config();
@@ -10,7 +10,42 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
+// The built bundle always runs as production, even if NODE_ENV wasn't set,
+// so a deploy can never fall back to the Vite dev server.
+const runningFromBuild = /[\\/]dist[\\/]server\.cjs$/.test(process.argv[1] ?? '');
+const isProduction = process.env.NODE_ENV === 'production' || runningFromBuild;
+
+app.disable('x-powered-by');
 app.set('trust proxy', 1);
+app.use(compression());
+
+const CONTENT_SECURITY_POLICY = [
+  "default-src 'self'",
+  "script-src 'self'",
+  // motion sets inline styles; Google Fonts serves the stylesheet and font files
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  "img-src 'self' data:",
+  "connect-src 'self'",
+  // Google Maps embed on the contact page
+  "frame-src https://www.google.com",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+].join('; ');
+
+if (isProduction) {
+  app.use((_req: express.Request, res: express.Response, next: express.NextFunction) => {
+    res.setHeader('Content-Security-Policy', CONTENT_SECURITY_POLICY);
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000');
+    next();
+  });
+}
+
 app.use(express.json({ limit: '20kb' }));
 
 const FALLBACK_CONTACT = 'Please call us on +251 943 739 086 or email herokegservice@gmail.com.';
@@ -23,6 +58,26 @@ function escapeHtml(value: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+// One address only: no lists, quotes, comments or angle brackets that a mail
+// parser could turn into extra Reply-To recipients.
+const EMAIL_PATTERN = /^[^\s@,;:"<>()[\]\\]+@[^\s@,;:"<>()[\]\\]+\.[^\s@,;:"<>()[\]\\]+$/;
+
+let transporter: nodemailer.Transporter | null = null;
+
+function getTransporter(user: string, pass: string): nodemailer.Transporter {
+  if (!transporter) {
+    transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user, pass },
+      // Fail fast so a stalled SMTP connection doesn't hold the request open
+      connectionTimeout: 15_000,
+      greetingTimeout: 15_000,
+      socketTimeout: 15_000,
+    });
+  }
+  return transporter;
 }
 
 function field(value: unknown, maxLength: number): string {
@@ -91,7 +146,7 @@ app.post('/api/contact', async (req: express.Request, res: express.Response) => 
       });
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!EMAIL_PATTERN.test(email)) {
       return res.status(400).json({
         success: false,
         message: 'Please enter a valid email address.'
@@ -101,8 +156,6 @@ app.post('/api/contact', async (req: express.Request, res: express.Response) => 
     const gmailUser = process.env.GMAIL_USER;
     const gmailPass = process.env.GMAIL_APP_PASSWORD;
     const recipient = process.env.CONTACT_RECIPIENT_EMAIL || gmailUser;
-
-    console.log(`[Contact Form] Submission received:`, { name, company, email, subject });
 
     if (!gmailUser || !gmailPass) {
       // Never pretend the inquiry was delivered: the lead would be lost.
@@ -124,15 +177,6 @@ app.post('/api/contact', async (req: express.Request, res: express.Response) => 
       message: escapeHtml(message),
     };
     const senderName = `${name} (${company})`.replace(/["\r\n]/g, '');
-
-    // Lazy initialize nodemailer transporter
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: gmailUser,
-        pass: gmailPass,
-      },
-    });
 
     const mailOptions = {
       from: `"${senderName}" <${gmailUser}>`, // Must send from the authenticated Gmail address
@@ -201,7 +245,7 @@ ${html.message}
       `
     };
 
-    await transporter.sendMail(mailOptions);
+    await getTransporter(gmailUser, gmailPass).sendMail(mailOptions);
     console.log('[Gmail SMTP] Email sent successfully to', recipient);
 
     return res.status(200).json({
@@ -216,6 +260,25 @@ ${html.message}
       message: `We couldn't send your inquiry right now. ${FALLBACK_CONTACT}`
     });
   }
+});
+
+app.all('/api/contact', (_req: express.Request, res: express.Response) => {
+  res.status(405).set('Allow', 'POST').json({ success: false, message: 'Method not allowed.' });
+});
+
+app.all('/api/*', (_req: express.Request, res: express.Response) => {
+  res.status(404).json({ success: false, message: 'Not found.' });
+});
+
+// JSON errors for the API (e.g. malformed or oversized bodies) instead of Express's HTML page
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  if (!req.path.startsWith('/api/')) return next(err);
+  const status = typeof err?.status === 'number' && err.status >= 400 && err.status < 500 ? err.status : 500;
+  const message = status === 413
+    ? `Your message is too long. ${FALLBACK_CONTACT}`
+    : status === 500 ? `Something went wrong. ${FALLBACK_CONTACT}` : 'Invalid request.';
+  if (status === 500) console.error('[API Error]', err);
+  res.status(status).json({ success: false, message });
 });
 
 // Explicit Search Engine & Crawler Endpoints
@@ -233,7 +296,8 @@ app.get('/robots.txt', (_req: express.Request, res: express.Response) => {
 
 // Vite middleware flow or Production static file server
 async function startServer() {
-  if (process.env.NODE_ENV !== 'production') {
+  if (!isProduction) {
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
@@ -241,6 +305,12 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), 'dist');
+    // The server bundle is built into dist/ too; never serve it
+    app.use(/^\/server\.cjs(\.map)?$/, (_req: express.Request, res: express.Response) => {
+      res.status(404).end();
+    });
+    // Hashed build assets never change, so let browsers keep them
+    app.use('/assets', express.static(path.join(distPath, 'assets'), { immutable: true, maxAge: '1y' }));
     app.use(express.static(distPath));
     app.get('*', (req: express.Request, res: express.Response) => {
       res.sendFile(path.join(distPath, 'index.html'));

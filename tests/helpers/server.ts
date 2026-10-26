@@ -30,12 +30,14 @@ export type TestServer = {
 export type ServerOptions = {
   smtpConfigured?: boolean;
   smtpFails?: boolean;
+  // Leave NODE_ENV unset to check the build still runs in production mode
+  nodeEnv?: string | null;
 };
 
 export const RECIPIENT = 'inbox@example.test';
 
 export async function startServer(options: ServerOptions = {}): Promise<TestServer> {
-  const { smtpConfigured = true, smtpFails = false } = options;
+  const { smtpConfigured = true, smtpFails = false, nodeEnv = 'production' } = options;
 
   if (!fs.existsSync(SERVER)) {
     throw new Error('dist/server.cjs is missing. Run `npm run build` first.');
@@ -48,10 +50,10 @@ export async function startServer(options: ServerOptions = {}): Promise<TestServ
   // Start from a clean environment so real credentials in the shell are never used.
   const env: NodeJS.ProcessEnv = {
     PATH: process.env.PATH,
-    NODE_ENV: 'production',
     MAIL_CAPTURE_FILE: captureFile,
     MAIL_FAIL: smtpFails ? '1' : '0',
   };
+  if (nodeEnv !== null) env.NODE_ENV = nodeEnv;
   if (smtpConfigured) {
     env.GMAIL_USER = 'sender@example.test';
     env.GMAIL_APP_PASSWORD = 'synthetic-test-password';

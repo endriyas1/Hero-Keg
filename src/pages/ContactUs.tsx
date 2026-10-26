@@ -174,9 +174,10 @@ export default React.memo(function ContactUs() {
         body: JSON.stringify(formData),
       });
 
-      const result = await response.json();
+      // Proxies and gateways answer errors with HTML pages, so don't assume JSON
+      const result = await response.json().catch(() => null);
 
-      if (response.ok && result.success) {
+      if (response.ok && result?.success) {
         setStatus({
           submitting: false,
           success: true,
@@ -200,7 +201,7 @@ export default React.memo(function ContactUs() {
         setStatus({
           submitting: false,
           success: false,
-          message: result.message || 'An error occurred while submitting. Please try again later.'
+          message: result?.message || "We couldn't send your inquiry right now. Please call us on +251 943 739 086 or email herokegservice@gmail.com."
         });
       }
     } catch (err: any) {
@@ -377,11 +378,12 @@ export default React.memo(function ContactUs() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="group">
-                  <label className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
+                  <label htmlFor="contact-name" className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
                     Full Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
+                    id="contact-name"
                     name="name"
                     required
                     value={formData.name}
@@ -391,11 +393,12 @@ export default React.memo(function ContactUs() {
                   />
                 </div>
                 <div className="group">
-                  <label className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
+                  <label htmlFor="contact-company" className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
                     Company Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
+                    id="contact-company"
                     name="company"
                     required
                     value={formData.company}
@@ -408,11 +411,12 @@ export default React.memo(function ContactUs() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="group">
-                  <label className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
+                  <label htmlFor="contact-email" className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
                     Email Address <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="email"
+                    id="contact-email"
                     name="email"
                     required
                     value={formData.email}
@@ -422,11 +426,12 @@ export default React.memo(function ContactUs() {
                   />
                 </div>
                 <div className="group">
-                  <label className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
+                  <label htmlFor="contact-phone" className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
                     Phone Number <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="tel"
+                    id="contact-phone"
                     name="phone"
                     required
                     value={formData.phone}
@@ -439,10 +444,11 @@ export default React.memo(function ContactUs() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="relative group">
-                  <label className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
+                  <label htmlFor="contact-service" className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
                     Service Required <span className="text-red-500">*</span>
                   </label>
                   <select
+                    id="contact-service"
                     name="service"
                     value={formData.service}
                     onChange={handleChange}
@@ -458,11 +464,12 @@ export default React.memo(function ContactUs() {
                   <ChevronDown className="absolute right-3 top-[38px] w-4 h-4 text-slate-400 pointer-events-none group-focus-within:text-[#C5A059] transition-colors" />
                 </div>
                 <div className="group">
-                  <label className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
+                  <label htmlFor="contact-kegs" className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
                     Number of Kegs (Optional)
                   </label>
                   <input
                     type="text"
+                    id="contact-kegs"
                     name="kegs"
                     value={formData.kegs}
                     onChange={handleChange}
@@ -473,11 +480,12 @@ export default React.memo(function ContactUs() {
               </div>
 
               <div className="group">
-                <label className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
+                <label htmlFor="contact-subject" className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
                   Subject <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
+                  id="contact-subject"
                   name="subject"
                   required
                   value={formData.subject}
@@ -488,10 +496,11 @@ export default React.memo(function ContactUs() {
               </div>
 
               <div className="group">
-                <label className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
+                <label htmlFor="contact-message" className="block text-sm font-bold text-[#183346] mb-2 group-focus-within:text-[#C5A059] transition-colors">
                   Message <span className="text-red-500">*</span>
                 </label>
                 <textarea
+                  id="contact-message"
                   name="message"
                   required
                   rows={6}

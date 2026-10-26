@@ -86,10 +86,47 @@ describe('production server hardening', () => {
     expect(body).not.toMatch(/SyntaxError|at JSON\.parse|node_modules/);
   });
 
+  it('rejects other methods on /api/contact with 405', async () => {
+    const res = await fetch(BASE_URL + '/api/contact');
+    expect(res.status).toBe(405);
+    expect(res.headers.get('allow')).toBe('POST');
+  });
+
+  // Finding F-11: hashed assets were uncompressed and revalidated on every view.
+  it('serves hashed assets compressed and cacheable for a year', async () => {
+    const html = await (await fetch(BASE_URL + '/')).text();
+    const script = html.match(/src="(\/assets\/index-[\w-]+\.js)"/)![1];
+    const res = await fetch(BASE_URL + script, { headers: { 'Accept-Encoding': 'gzip' } });
+    expect(res.headers.get('content-encoding')).toBe('gzip');
+    expect(res.headers.get('cache-control')).toMatch(/max-age=31536000.*immutable/);
+  });
+
+  it('keeps index.html revalidated so new deploys are picked up', async () => {
+    const res = await fetch(BASE_URL + '/');
+    expect(res.headers.get('cache-control')).not.toMatch(/immutable/);
+  });
+
   it('serves robots.txt and sitemap.xml with the right content types', async () => {
     const robots = await fetch(BASE_URL + '/robots.txt');
     expect(robots.headers.get('content-type')).toMatch(/text\/plain/);
     const sitemap = await fetch(BASE_URL + '/sitemap.xml');
     expect(sitemap.headers.get('content-type')).toMatch(/application\/xml/);
+  });
+});
+
+// Finding F-02: without NODE_ENV the built server used to start the Vite dev server.
+describe('built server with NODE_ENV unset', () => {
+  let server: TestServer;
+  beforeAll(async () => {
+    server = await startServer({ nodeEnv: null });
+  });
+  afterAll(() => server.stop());
+
+  it('still serves the production build and hides the source', async () => {
+    const html = await (await fetch(BASE_URL + '/')).text();
+    expect(html).not.toContain('/@vite/client');
+    const source = await (await fetch(BASE_URL + '/server.ts?raw')).text();
+    expect(source).not.toContain("from 'express'");
+    expect((await fetch(BASE_URL + '/contact')).headers.get('content-security-policy')).toBeTruthy();
   });
 });
